@@ -125,9 +125,11 @@ a {
   justify-content: center;
 }
 
-.logo-svg {
+.logo-svg,
+.logo-img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .logo-text {
