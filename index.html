@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AoBe Solutions Group · Simple, Practical AI Consulting for Small Businesses</title>
+  <meta name="description" content="We help local small businesses become more efficient with practical, jargon-free AI solutions. Schedule your free consultation with AoBe Solutions Group today.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="header-nav" id="header">
+    <div class="nav-container">
+      <a href="#" class="logo-link">
+        <div class="logo-icon-container">
+          <svg viewBox="0 0 200 200" class="logo-svg">
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0d9488" />
+                <stop offset="100%" stop-color="#2563eb" />
+              </linearGradient>
+            </defs>
+            <!-- A and B Interlinked Symbol -->
+            <path d="M 60,150 L 100,50 L 140,150" fill="none" stroke="url(#logo-grad)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 75,115 L 125,115" fill="none" stroke="url(#logo-grad)" stroke-width="20" stroke-linecap="round"/>
+            <path d="M 120,70 C 150,70 165,90 165,105 C 165,120 150,130 130,130 C 160,130 170,145 170,160 C 170,180 150,190 120,190" fill="none" stroke="url(#logo-grad)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" transform="translate(-10, -30) scale(0.9)"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="company-name">AoBe</span>
+          <span class="company-sub">SOLUTIONS GROUP</span>
+        </div>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="desktop-menu">
+        <a href="#home" class="menu-link active">Home</a>
+        <a href="#services" class="menu-link">Services</a>
+        <a href="#about" class="menu-link">About Us</a>
+        <a href="#contact" class="menu-link btn-menu-cta">Free Consultation</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="mobile-dropdown" id="mobile-dropdown">
+    <nav class="mobile-dropdown-menu">
+      <a href="#home" class="mobile-link">Home</a>
+      <a href="#services" class="mobile-link">Services</a>
+      <a href="#about" class="mobile-link">About Us</a>
+      <a href="#contact" class="mobile-link mobile-btn-cta">Free Consultation</a>
+    </nav>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <!-- SVG Technical Circuit Lines Background -->
+    <div class="circuit-background">
+      <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-50,150 H300 L380,230 V450 L420,490 H600" stroke="rgba(13, 148, 136, 0.06)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M1200,100 H1000 L950,150 V300 L900,350 H750" stroke="rgba(37, 99, 235, 0.05)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="300" cy="150" r="4" fill="rgba(13, 148, 136, 0.2)"/>
+        <circle cx="380" cy="230" r="4" fill="rgba(13, 148, 136, 0.2)"/>
+        <circle cx="950" cy="150" r="4" fill="rgba(37, 99, 235, 0.2)"/>
+        <circle cx="900" cy="300" r="4" fill="rgba(37, 99, 235, 0.2)"/>
+      </svg>
+    </div>
+
+    <div class="section-container hero-container">
+      <div class="hero-text-block">
+        <span class="hero-badge">💡 Simple & Practical AI for Business</span>
+        <h1 class="hero-title">Quantum Intelligence.<br><span class="highlight">Realized Solutions.</span></h1>
+        <p class="hero-desc">
+          AoBe Solutions Group bridges the gap between technical complexity and everyday business needs. We help small, local businesses implement smart, approachable AI systems that save time, reduce repetitive work, and boost profit.
+        </p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-primary">Explore Our Services</a>
+          <a href="#contact" class="btn btn-secondary">Schedule a Consultation</a>
+        </div>
+      </div>
+      
+      <!-- Interactive Neural Network Graphic -->
+      <div class="hero-graphic-block">
+        <div class="canvas-wrapper">
+          <canvas id="network-canvas"></canvas>
+          <div class="graphic-fallback-node">
+            <svg viewBox="0 0 200 200" class="rotating-network-svg">
+              <defs>
+                <radialGradient id="node-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#0d9488" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#2563eb" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <circle cx="100" cy="100" r="90" fill="url(#node-glow)"/>
+              <circle cx="100" cy="100" r="40" stroke="rgba(13, 148, 136, 0.3)" stroke-width="2" stroke-dasharray="5,5"/>
+              <circle cx="100" cy="100" r="70" stroke="rgba(37, 99, 235, 0.2)" stroke-width="1.5"/>
+              <!-- Nodes -->
+              <circle cx="100" cy="30" r="6" fill="#0d9488"/>
+              <circle cx="160" cy="70" r="5" fill="#2563eb"/>
+              <circle cx="150" cy="140" r="6" fill="#0d9488"/>
+              <circle cx="50" cy="140" r="5" fill="#2563eb"/>
+              <circle cx="40" cy="70" r="7" fill="#0d9488"/>
+              <circle cx="100" cy="100" r="12" fill="url(#logo-grad)" style="opacity: 0.8;"/>
+              <!-- Connective lines -->
+              <line x1="100" y1="30" x2="100" y2="100" stroke="rgba(13, 148, 136, 0.3)" stroke-width="1.5"/>
+              <line x1="160" y1="70" x2="100" y2="100" stroke="rgba(37, 99, 235, 0.3)" stroke-width="1.5"/>
+              <line x1="150" y1="140" x2="100" y2="100" stroke="rgba(13, 148, 136, 0.3)" stroke-width="1.5"/>
+              <line x1="50" y1="140" x2="100" y2="100" stroke="rgba(37, 99, 235, 0.3)" stroke-width="1.5"/>
+              <line x1="40" y1="70" x2="100" y2="100" stroke="rgba(13, 148, 136, 0.3)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">OUR SERVICES</span>
+        <h2>How We Help Your Business Thrive</h2>
+        <p class="section-subtitle">We focus on practical, ready-to-use solutions that show immediate results—no expensive software development or confusing buzzwords required.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card">
+          <div class="service-icon">⚙️</div>
+          <h3>Workflow Automation</h3>
+          <p>We build simple, automated pipelines to handle repetitive tasks—like copy-pasting data between spreadsheets, organizing files, sending standard email alerts, and sending billing notifications automatically.</p>
+        </div>
+        <!-- Service 2 -->
+        <div class="service-card">
+          <div class="service-icon">💬</div>
+          <h3>Smart AI Integration</h3>
+          <p>Integrate conversational customer assistants, FAQ help desks, and auto-scheduling tools into your existing site. Make sure your local clients get answers 24/7 without needing extra staff.</p>
+        </div>
+        <!-- Service 3 -->
+        <div class="service-card">
+          <div class="service-icon">📊</div>
+          <h3>Business Efficiency Audits</h3>
+          <p>We look at the software you use daily (calendars, CRM, invoices, documents) and point out where AI tools can immediately cut down the hours you spend on administrative overhead.</p>
+        </div>
+        <!-- Service 4 -->
+        <div class="service-card">
+          <div class="service-icon">🤝</div>
+          <h3>Local Team Training</h3>
+          <p>We provide approachable, hands-on training to get your staff comfortable using ChatGPT, Claude, and basic automation tools to write documents, summarize files, and work faster.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="section-container about-container">
+      <div class="about-image-block">
+        <div class="about-graphic-card">
+          <div class="circle-container">
+            <span class="pulse-ring ring-1"></span>
+            <span class="pulse-ring ring-2"></span>
+            <div class="graphic-center">🤝</div>
+          </div>
+          <h3>Community-Focused AI</h3>
+          <p>Helping local retail, clinics, trades, and professional offices run smarter.</p>
+        </div>
+      </div>
+
+      <div class="about-text-block">
+        <span class="section-tag">ABOUT US</span>
+        <h2>Keeping AI Simple, Approachable, and Local</h2>
+        <p class="about-p">
+          We believe that cutting-edge technology shouldn't be reserved just for massive Silicon Valley startups. Small, family-owned, and local businesses are the heart of our community. That's why we founded <strong>AoBe Solutions Group</strong>—to make powerful AI tools accessible, understandable, and affordable for our neighbors.
+        </p>
+        <p class="about-p">
+          We don't talk about theoretical concepts or throw complex jargon around. We sit down with you, look at your actual daily processes, and design practical steps to make your workflow easier. Our goal is simple: to help you do more with less stress.
+        </p>
+        <div class="about-metrics">
+          <div class="metric-item">
+            <span class="metric-val">100%</span>
+            <span class="metric-lbl">Practical Focus</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-val">Zero</span>
+            <span class="metric-lbl">Tech Jargon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="section-container">
+      <div class="contact-box">
+        <div class="contact-info-block">
+          <span class="section-tag invert">GET IN TOUCH</span>
+          <h2>Let's Make Your Business More Efficient</h2>
+          <p>Ready to see how simple AI automation can help your team? Schedule a free 30-minute consultation. We'll listen to your challenges and propose a few practical ways to help.</p>
+          <div class="contact-details">
+            <div class="detail-item">
+              <span class="detail-icon">📍</span>
+              <span>Based Locally & Supporting Our Community</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-icon">✉️</span>
+              <span>hello@aobesolutions.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-block">
+          <h3>Request a Free Consultation</h3>
+          <form id="consultation-form" action="#" method="POST">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="business">Business Name</label>
+                <input type="text" id="business" name="business" placeholder="Main Street Bakery" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number (Optional)</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000">
+              </div>
+              <div class="form-group full-width">
+                <label for="bottleneck">What is your biggest daily bottleneck or time-waster?</label>
+                <textarea id="bottleneck" name="bottleneck" placeholder="e.g. manually copy-pasting customer details, scheduling client appointments, drafting repetitive quotes..." required></textarea>
+              </div>
+              <div class="form-group full-width">
+                <button type="submit" class="btn btn-primary btn-block" id="form-submit-btn">Request Consultation 🚀</button>
+              </div>
+            </div>
+          </form>
+          <!-- Success State -->
+          <div id="form-success-state" class="form-success-state hide">
+            <div class="success-icon">🎉</div>
+            <h4>Thank You!</h4>
+            <p>Your request has been received. We will look over your details and get back to you within 24 hours to schedule your free consultation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="section-container footer-container">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <span class="logo-text-footer">AoBe</span>
+          <span class="company-sub-footer">SOLUTIONS GROUP</span>
+        </div>
+        <p>Providing simple, approachable, and practical AI consulting services to help local small businesses thrive.</p>
+      </div>
+      <div class="footer-right">
+        <span class="copyright">© 2026 AoBe Solutions Group. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="app.js"></script>
+</body>
+</html>
