@@ -118,16 +118,52 @@ function initNetworkCanvas() {
   const connectionDistance = 85;
   const mouse = { x: null, y: null, radius: 100 };
 
-  // Track cursor position
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
+  const wrapper = canvas.parentElement;
+  const card = document.getElementById('interactive-card');
+
+  // Track cursor position and update 3D card tilt
+  wrapper.addEventListener('mousemove', (e) => {
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    mouse.x = x;
+    mouse.y = y;
+
+    if (card) {
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+      const dx = x - xc;
+      const dy = y - yc;
+      
+      // Calculate pitch (rx) and yaw (ry) rotations - max 12 degrees
+      const maxTilt = 12;
+      const rx = -(dy / yc) * maxTilt;
+      const ry = (dx / xc) * maxTilt;
+      
+      card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`;
+      
+      // Move the shiny light glare highlight
+      const glare = card.querySelector('.glare-effect');
+      if (glare) {
+        const px = (x / rect.width) * 100;
+        const py = (y / rect.height) * 100;
+        glare.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 75%)`;
+      }
+    }
   });
 
-  canvas.addEventListener('mouseleave', () => {
+  wrapper.addEventListener('mouseleave', () => {
     mouse.x = null;
     mouse.y = null;
+    
+    if (card) {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      const glare = card.querySelector('.glare-effect');
+      if (glare) {
+        glare.style.background = 'none';
+      }
+    }
   });
 
   // Particle Class
