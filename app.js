@@ -77,18 +77,45 @@ function initFormSubmit() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Disable button & show loading state
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Sending details... ⏱️';
+    // Extract form input values
+    const name = document.getElementById('name').value;
+    const business = document.getElementById('business').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value || 'N/A';
+    const bottleneck = document.getElementById('bottleneck').value;
 
-    // Simulate server communication delay
+    // Show loading state in button
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Opening Email Client... ✉️';
+
+    // Construct body and subject parameters for mailto URL
+    const subject = encodeURIComponent(`AoBe Consultation Request - ${business}`);
+    const body = encodeURIComponent(
+      `Hello AoBe Solutions Group,\n\n` +
+      `I would like to request a free AI efficiency consultation.\n\n` +
+      `--- Contact Details ---\n` +
+      `Name: ${name}\n` +
+      `Business: ${business}\n` +
+      `Email: ${email}\n` +
+      `Phone: ${phone}\n\n` +
+      `--- Biggest Daily Bottleneck ---\n` +
+      `${bottleneck}\n\n` +
+      `Best regards,\n` +
+      `${name}`
+    );
+
+    // Trigger user's local email client
+    const mailtoUrl = `mailto:info@aobe.fyi?subject=${subject}&body=${body}`;
+    window.location.href = mailtoUrl;
+
+    // Show success dialog on page after a short transition
     setTimeout(() => {
       form.classList.add('hide');
       successBox.classList.remove('hide');
       
       // Scroll to Success Box smoothly
       successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 1200);
+    }, 1000);
   });
 }
 

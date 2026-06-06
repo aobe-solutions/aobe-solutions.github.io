@@ -748,6 +748,15 @@ a {
   font-size: 14.5px;
 }
 
+.contact-email-link {
+  color: white;
+  transition: color var(--transition-fast);
+}
+
+.contact-email-link:hover {
+  color: var(--color-teal);
+}
+
 .detail-icon {
   font-size: 20px;
   width: 40px;
