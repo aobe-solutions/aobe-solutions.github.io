@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senior Portrait Location & Pose Scout · AoBe Solutions</title>
+  <meta name="description" content="Decomposed interactive gallery and local location scouting planner for senior portrait poses, lighting, outfits, and local spot recreation.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="scout-styles.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="scout-header">
+    <div class="scout-nav-container">
+      <a href="index.html" class="scout-brand">
+        <img src="logo.png" alt="AoBe Solutions Logo">
+        <div class="scout-brand-text">AoBe <span>SCOUT</span></div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link-btn">Home</a>
+        <a href="pilates-studio-tech.html" class="nav-link-btn">Studio Proposals</a>
+        <a href="senior-portrait-scout.html" class="nav-link-btn active">Portrait Scout</a>
+        <button id="view-plan-btn" class="nav-link-btn" style="border: 1px solid var(--accent-teal-glow);">
+          📋 My Shoot Plan <span id="plan-counter" class="plan-counter-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="scout-hero">
+    <div class="hero-pill">✨ Interactive Location & Pose Scouting Portal</div>
+    <h1>Deconstructed Senior Portrait Ideas</h1>
+    <p>
+      Browse high-res reference poses, lighting setups, and backdrop ideas. Save your favorite poses to your local <strong>Shoot Plan</strong> and log local spots in your area to recreate each look!
+    </p>
+  </section>
+
+  <!-- Floating Glassmorphism Controls Dock -->
+  <div class="controls-dock-wrapper">
+    <div class="controls-dock">
+      <div class="dock-primary-row">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" class="search-input" placeholder="Search poses, locations (e.g. 'library', 'field', 'brick', 'jeans')...">
+        </div>
+
+        <div class="toggle-group">
+          <button id="view-gallery-btn" class="toggle-btn active">🖼️ Gallery View</button>
+          <button id="gender-toggle-btn" class="toggle-btn" style="color: var(--accent-purple);">Gender: Female Only</button>
+        </div>
+      </div>
+
+      <!-- Multi-axis Filter Tag Chips -->
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-teal); font-weight: 700; letter-spacing: 0.05em;">Categories:</div>
+        <div id="category-chips" class="filter-chips-row"></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-purple); font-weight: 700; letter-spacing: 0.05em;">Vibes & Mood:</div>
+        <div id="vibe-chips" class="filter-chips-row"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <main class="main-content">
+    
+    <!-- Gallery Grid View -->
+    <div id="gallery-section">
+      <div id="gallery-grid" class="gallery-grid"></div>
+    </div>
+
+    <!-- Interactive Shoot Plan & Scouting Notepad View -->
+    <div id="shoot-plan-section" class="shoot-plan-section">
+      <div class="plan-header">
+        <div>
+          <h2>My Custom Shoot Plan & Local Spot Checklist</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Track your pinned poses, log local addresses in your area, and generate a printable shot list.</p>
+        </div>
+        <div class="plan-actions">
+          <button id="print-plan-btn" class="btn-action" style="color: var(--accent-teal); border-color: var(--accent-teal);">🖨️ Print / Save PDF</button>
+          <button id="export-json-btn" class="btn-action">💾 Export Backup (JSON)</button>
+          <button id="import-json-btn" class="btn-action">📂 Import Backup</button>
+          <input type="file" id="json-file-input" accept=".json" style="display: none;">
+        </div>
+      </div>
+
+      <div id="plan-items-list"></div>
+    </div>
+
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-container">
+      <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-image-col">
+        <img id="modal-img" src="" alt="" class="modal-img">
+      </div>
+
+      <div class="modal-info-col">
+        <h2 id="modal-title" class="modal-title"></h2>
+        <div id="modal-tags" class="modal-tags"></div>
+
+        <div class="modal-section">
+          <div class="modal-label">Pose & Framing Breakdown</div>
+          <p id="modal-pose-desc" class="modal-text"></p>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-label">Original Location & Context</div>
+          <p id="modal-original-loc" class="modal-text" style="font-weight: 600; color: var(--text-main);"></p>
+          <p id="modal-caption" class="modal-text" style="font-style: italic;"></p>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-label">Your Local Scouting Notes (Auto-Saved)</div>
+          <textarea id="modal-notes-area" class="scout-notes-textarea" placeholder="Enter equivalent local spot in your area (e.g. 'Centennial Park gazebo', 'Downtown 3rd Ave alley')..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <a id="modal-gmaps-btn" href="#" target="_blank" class="btn-gmaps">📍 Find Local Spot on Google Maps ↗</a>
+          <button id="modal-pin-btn" class="btn-action">☆ Pin to Shoot Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="scout-footer">
+    <p>© 2026 AoBe Solutions Group · Senior Portrait Location & Pose Scout Application</p>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="locations_data.js"></script>
+  <script src="scout-app.js"></script>
+</body>
+</html>
