@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const legacyStatuses = JSON.parse(localStorage.getItem('scout_item_statuses') || '{}');
 
     plansStore = {
-      activePlanName: "Emma's Senior Shoot",
+      activePlanName: "Maddie's Senior Shoot",
       plans: {
-        "Emma's Senior Shoot": {
-          name: "Emma's Senior Shoot",
+        "Maddie's Senior Shoot": {
+          name: "Maddie's Senior Shoot",
           updatedAt: new Date().toISOString(),
           pinnedIds: legacyPinned,
           scoutNotes: legacyNotes,

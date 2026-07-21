@@ -256,7 +256,7 @@ const LOCATIONS_DATA = [
   },
   {
     "id": "sunset_field",
-    "title": "Golden Hour Grass & Sunset Hills (Emma)",
+    "title": "Golden Hour Grass & Sunset Hills (Maddie)",
     "category": "Nature & Outdoors",
     "vibe": "Dreamy",
     "outfit": "Dress",
@@ -265,7 +265,7 @@ const LOCATIONS_DATA = [
     "isLocalSpot": false,
     "poseDescription": "Standing twirl or walking pose in knee-deep golden field grass with warm backlight.",
     "originalLocation": "Rolling Hill Field near Studio, Hendersonville, TN",
-    "originalCaption": "17 year old Emma looked stunning in this white dress and gorgeous field. The tall grass, rolling hills, and pink sunset made a dreamy backdrop.",
+    "originalCaption": "17 year old Maddie looked stunning in this white dress and gorgeous field. The tall grass, rolling hills, and pink sunset made a dreamy backdrop.",
     "imageLocalPath": "images/locations/senior_girl_sunset_field-1.jpg",
     "googleMapsQuery": "nature park open field"
   },
