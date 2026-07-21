@@ -145,6 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-input');
   const categoryChipsContainer = document.getElementById('category-chips');
   const vibeChipsContainer = document.getElementById('vibe-chips');
+  const filterToggleBtn = document.getElementById('filter-toggle-btn');
+  const filterChipsWrapper = document.getElementById('filter-chips-wrapper');
+  const activeFilterBadge = document.getElementById('active-filter-badge');
   const genderToggleBtn = document.getElementById('gender-toggle-btn');
   const viewGalleryBtn = document.getElementById('view-gallery-btn');
   const viewPlanBtn = document.getElementById('view-plan-btn');
@@ -152,6 +155,61 @@ document.addEventListener('DOMContentLoaded', () => {
   const gallerySection = document.getElementById('gallery-section');
   const shootPlanSection = document.getElementById('shoot-plan-section');
   const planItemsList = document.getElementById('plan-items-list');
+
+  // Filter Drawer Toggle for Mobile
+  if (filterToggleBtn && filterChipsWrapper) {
+    filterToggleBtn.addEventListener('click', () => {
+      filterChipsWrapper.classList.toggle('open');
+      const isOpen = filterChipsWrapper.classList.contains('open');
+      filterToggleBtn.innerHTML = `🎛️ Filters ${isOpen ? '▴' : '▾'}`;
+    });
+  }
+
+  // Categories & Vibes derived from LOCATIONS_DATA
+  const categories = ['All', '⭐ Local Parker & Hood Co.', ...new Set(LOCATIONS_DATA.map(item => item.category))];
+  const vibes = ['All', ...new Set(LOCATIONS_DATA.map(item => item.vibe))];
+
+  // Render Filter Chips
+  function renderFilterChips() {
+    categoryChipsContainer.innerHTML = '';
+    categories.forEach(cat => {
+      const chip = document.createElement('button');
+      const isLocalChip = cat === '⭐ Local Parker & Hood Co.';
+      chip.className = `filter-chip ${cat === activeCategory ? 'active' : ''} ${isLocalChip ? 'chip-gender' : ''}`;
+      chip.textContent = cat;
+      chip.addEventListener('click', () => {
+        activeCategory = cat;
+        renderFilterChips();
+        renderGallery();
+      });
+      categoryChipsContainer.appendChild(chip);
+    });
+
+    vibeChipsContainer.innerHTML = '';
+    vibes.forEach(vibe => {
+      const chip = document.createElement('button');
+      chip.className = `filter-chip ${vibe === activeVibe ? 'active' : ''}`;
+      chip.textContent = vibe;
+      chip.addEventListener('click', () => {
+        activeVibe = vibe;
+        renderFilterChips();
+        renderGallery();
+      });
+      vibeChipsContainer.appendChild(chip);
+    });
+
+    // Update Filter Active State
+    const activeCount = (activeCategory !== 'All' ? 1 : 0) + (activeVibe !== 'All' ? 1 : 0);
+    if (filterToggleBtn) {
+      if (activeCount > 0) {
+        filterToggleBtn.classList.add('has-active');
+        filterToggleBtn.innerHTML = `🎛️ Filters (${activeCount} Active) ${filterChipsWrapper && filterChipsWrapper.classList.contains('open') ? '▴' : '▾'}`;
+      } else {
+        filterToggleBtn.classList.remove('has-active');
+        filterToggleBtn.innerHTML = `🎛️ Filters ${filterChipsWrapper && filterChipsWrapper.classList.contains('open') ? '▴' : '▾'}`;
+      }
+    }
+  }
 
   // Plan selector & General Notes DOM Elements
   const planSelect = document.getElementById('plan-select');
@@ -187,52 +245,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const jsonFileInput = document.getElementById('json-file-input');
 
   // Bind Voice Dictation for General Plan Notes
-  setupVoiceDictation(dictateGeneralNotesBtn, generalPlanNotesArea, (newVal) => {
-    const plan = getActivePlan();
-    plan.generalNotes = newVal;
-    plan.updatedAt = new Date().toISOString();
-    savePlansStore();
-  });
-
-  // Save General Notes on typing
-  generalPlanNotesArea.addEventListener('input', () => {
-    const plan = getActivePlan();
-    plan.generalNotes = generalPlanNotesArea.value;
-    plan.updatedAt = new Date().toISOString();
-    savePlansStore();
-  });
-
-  // Categories & Vibes derived from LOCATIONS_DATA
-  const categories = ['All', '⭐ Local Parker & Hood Co.', ...new Set(LOCATIONS_DATA.map(item => item.category))];
-  const vibes = ['All', ...new Set(LOCATIONS_DATA.map(item => item.vibe))];
-
-  // Render Filter Chips
-  function renderFilterChips() {
-    categoryChipsContainer.innerHTML = '';
-    categories.forEach(cat => {
-      const chip = document.createElement('button');
-      const isLocalChip = cat === '⭐ Local Parker & Hood Co.';
-      chip.className = `filter-chip ${cat === activeCategory ? 'active' : ''} ${isLocalChip ? 'chip-gender' : ''}`;
-      chip.textContent = cat;
-      chip.addEventListener('click', () => {
-        activeCategory = cat;
-        renderFilterChips();
-        renderGallery();
-      });
-      categoryChipsContainer.appendChild(chip);
+  if (dictateGeneralNotesBtn && generalPlanNotesArea) {
+    setupVoiceDictation(dictateGeneralNotesBtn, generalPlanNotesArea, (newVal) => {
+      const plan = getActivePlan();
+      plan.generalNotes = newVal;
+      plan.updatedAt = new Date().toISOString();
+      savePlansStore();
     });
 
-    vibeChipsContainer.innerHTML = '';
-    vibes.forEach(vibe => {
-      const chip = document.createElement('button');
-      chip.className = `filter-chip ${vibe === activeVibe ? 'active' : ''}`;
-      chip.textContent = vibe;
-      chip.addEventListener('click', () => {
-        activeVibe = vibe;
-        renderFilterChips();
-        renderGallery();
-      });
-      vibeChipsContainer.appendChild(chip);
+    generalPlanNotesArea.addEventListener('input', () => {
+      const plan = getActivePlan();
+      plan.generalNotes = generalPlanNotesArea.value;
+      plan.updatedAt = new Date().toISOString();
+      savePlansStore();
     });
   }
 

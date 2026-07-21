@@ -238,7 +238,43 @@ body {
   box-shadow: 0 2px 10px var(--accent-teal-glow);
 }
 
-/* Filter Tag Chips */
+/* Filter Tag Chips & Collapsible Drawer */
+.filter-chips-collapsible {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filter-drawer-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-drawer-toggle-btn.has-active {
+  color: var(--accent-teal) !important;
+  border-color: var(--accent-teal) !important;
+}
+
+@media (max-width: 768px) {
+  .filter-chips-collapsible {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .filter-chips-collapsible.open {
+    max-height: 800px;
+    opacity: 1;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-glass);
+  }
+}
+
 .filter-chips-row {
   display: flex;
   gap: 0.5rem;
