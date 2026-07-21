@@ -914,6 +914,56 @@ body {
   color: var(--text-main);
 }
 
+/* General Plan Notes & Voice Dictation */
+.general-notes-card {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.general-notes-textarea {
+  min-height: 90px;
+  background: rgba(15, 23, 42, 0.6);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-color: var(--border-glass);
+}
+
+.mic-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent-teal);
+  border: 1px solid var(--accent-teal);
+  transition: all 0.3s ease;
+}
+
+.mic-btn:hover {
+  background: var(--accent-teal-glow);
+}
+
+.mic-btn.listening {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  animation: micPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes micPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
 /* Toast Notifications */
 .toast-container {
   position: fixed;

@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Maddie's Senior Shoot": {
           name: "Maddie's Senior Shoot",
           updatedAt: new Date().toISOString(),
+          generalNotes: "",
           pinnedIds: legacyPinned,
           scoutNotes: legacyNotes,
           scoutStatuses: legacyStatuses
@@ -38,18 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function getActivePlan() {
     if (!plansStore.plans[plansStore.activePlanName]) {
       const keys = Object.keys(plansStore.plans);
-      plansStore.activePlanName = keys.length > 0 ? keys[0] : "My Senior Shoot Plan";
+      plansStore.activePlanName = keys.length > 0 ? keys[0] : "Maddie's Senior Shoot";
       if (!plansStore.plans[plansStore.activePlanName]) {
         plansStore.plans[plansStore.activePlanName] = {
           name: plansStore.activePlanName,
           updatedAt: new Date().toISOString(),
+          generalNotes: "",
           pinnedIds: [],
           scoutNotes: {},
           scoutStatuses: {}
         };
       }
     }
-    return plansStore.plans[plansStore.activePlanName];
+
+    const plan = plansStore.plans[plansStore.activePlanName];
+    if (plan.generalNotes === undefined) plan.generalNotes = "";
+    return plan;
   }
 
   function savePlansStore() {
@@ -74,6 +79,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3500);
   }
 
+  // Web Speech API Voice Dictation Helper
+  function setupVoiceDictation(btnEl, textareaEl, onSaveCallback) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      btnEl.addEventListener('click', () => {
+        showToast('Voice dictation is not supported in this browser. Please type your notes.', 'error');
+      });
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    let isListening = false;
+
+    function resetMicUI() {
+      isListening = false;
+      btnEl.classList.remove('listening');
+      btnEl.innerHTML = '🎙️ Dictate Notes (Voice)';
+    }
+
+    btnEl.addEventListener('click', () => {
+      if (isListening) {
+        recognition.stop();
+        return;
+      }
+
+      try {
+        recognition.start();
+        isListening = true;
+        btnEl.classList.add('listening');
+        btnEl.innerHTML = '🔴 Listening... (speak now)';
+        showToast('Microphone active. Speak your notes now...');
+      } catch (err) {
+        showToast('Error starting microphone dictation.', 'error');
+        resetMicUI();
+      }
+    });
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript) {
+        const existing = textareaEl.value ? textareaEl.value + ' ' : '';
+        textareaEl.value = existing + transcript;
+        if (onSaveCallback) onSaveCallback(textareaEl.value);
+        showToast(`Dictated: "${transcript}"`);
+      }
+    };
+
+    recognition.onerror = () => {
+      showToast('Dictation ended or microphone error.', 'error');
+      resetMicUI();
+    };
+
+    recognition.onend = () => {
+      resetMicUI();
+    };
+  }
+
   // DOM Elements
   const galleryGrid = document.getElementById('gallery-grid');
   const searchInput = document.getElementById('search-input');
@@ -87,11 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const shootPlanSection = document.getElementById('shoot-plan-section');
   const planItemsList = document.getElementById('plan-items-list');
 
-  // Plan selector DOM Elements
+  // Plan selector & General Notes DOM Elements
   const planSelect = document.getElementById('plan-select');
   const newPlanBtn = document.getElementById('new-plan-btn');
   const renamePlanBtn = document.getElementById('rename-plan-btn');
   const deletePlanBtn = document.getElementById('delete-plan-btn');
+
+  const generalPlanNotesArea = document.getElementById('general-plan-notes');
+  const dictateGeneralNotesBtn = document.getElementById('dictate-general-notes-btn');
 
   // Modal DOM Elements
   const modalOverlay = document.getElementById('modal-overlay');
@@ -116,6 +185,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const importJsonBtn = document.getElementById('import-json-btn');
   const shareCodeBtn = document.getElementById('share-code-btn');
   const jsonFileInput = document.getElementById('json-file-input');
+
+  // Bind Voice Dictation for General Plan Notes
+  setupVoiceDictation(dictateGeneralNotesBtn, generalPlanNotesArea, (newVal) => {
+    const plan = getActivePlan();
+    plan.generalNotes = newVal;
+    plan.updatedAt = new Date().toISOString();
+    savePlansStore();
+  });
+
+  // Save General Notes on typing
+  generalPlanNotesArea.addEventListener('input', () => {
+    const plan = getActivePlan();
+    plan.generalNotes = generalPlanNotesArea.value;
+    plan.updatedAt = new Date().toISOString();
+    savePlansStore();
+  });
 
   // Categories & Vibes derived from LOCATIONS_DATA
   const categories = ['All', '⭐ Local Parker & Hood Co.', ...new Set(LOCATIONS_DATA.map(item => item.category))];
@@ -442,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
       plansStore.plans[trimmed] = {
         name: trimmed,
         updatedAt: new Date().toISOString(),
+        generalNotes: "",
         pinnedIds: [],
         scoutNotes: {},
         scoutStatuses: {}
@@ -504,12 +590,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderShootPlan() {
     planItemsList.innerHTML = '';
     const plan = getActivePlan();
+    
+    // Load general notes into textarea
+    generalPlanNotesArea.value = plan.generalNotes || '';
+
     const pinnedItems = LOCATIONS_DATA.filter(item => plan.pinnedIds.includes(item.id));
 
     if (pinnedItems.length === 0) {
       planItemsList.innerHTML = `
         <div class="empty-state">
-          <h3>"${plan.name}" is currently empty</h3>
+          <h3>"${plan.name}" has no pinned poses yet</h3>
           <p>Click the star icon (☆) on any photo card in the gallery to pin poses to this shot list!</p>
         </div>
       `;
@@ -528,7 +618,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <h4>${index + 1}. ${item.isLocalSpot ? '⭐ ' : ''}${item.title} (${item.vibe})</h4>
           <p style="font-size: 0.85rem; color: var(--text-muted);">${item.poseDescription}</p>
           <div style="margin-top: 6px;">
-            <label style="font-size: 0.8rem; font-weight: bold; color: var(--accent-teal);">Local Re-creation Spot & Notes:</label>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label style="font-size: 0.8rem; font-weight: bold; color: var(--accent-teal);">Local Re-creation Spot & Notes:</label>
+              <button class="btn-action mic-btn item-mic-btn" style="font-size: 0.75rem; padding: 2px 8px;">🎙️ Dictate</button>
+            </div>
             <textarea class="scout-notes-textarea plan-item-note" data-id="${item.id}" placeholder="Note local equivalent spot, address, time of day...">${userNote}</textarea>
           </div>
         </div>
@@ -544,6 +637,16 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
 
+      const itemNoteArea = planCard.querySelector('.plan-item-note');
+      const itemMicBtn = planCard.querySelector('.item-mic-btn');
+
+      // Bind Voice Dictation for individual item notes
+      setupVoiceDictation(itemMicBtn, itemNoteArea, (newVal) => {
+        plan.scoutNotes[item.id] = newVal;
+        plan.updatedAt = new Date().toISOString();
+        savePlansStore();
+      });
+
       // Status Change Listener
       planCard.querySelector('.status-select').addEventListener('change', (e) => {
         plan.scoutStatuses[item.id] = e.target.value;
@@ -552,7 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // Note Change Listener
-      planCard.querySelector('.plan-item-note').addEventListener('input', (e) => {
+      itemNoteArea.addEventListener('input', (e) => {
         plan.scoutNotes[item.id] = e.target.value;
         plan.updatedAt = new Date().toISOString();
         savePlansStore();
@@ -572,11 +675,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.print();
   });
 
-  // Export Plan JSON File (To Share with Daughter / Dad)
+  // Export Plan JSON File (To Share with Daughter / Dad / AI Agent)
   exportJsonBtn.addEventListener('click', () => {
     const plan = getActivePlan();
 
-    // Embed rich location metadata into exported file so it is human readable in any JSON viewer
+    // Embed rich location metadata into exported file so it is human readable in any JSON viewer or AI agent
     const exportedItems = LOCATIONS_DATA.filter(item => plan.pinnedIds.includes(item.id)).map(item => ({
       id: item.id,
       title: item.title,
@@ -596,6 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
       version: "1.0",
       planName: plan.name,
       exportedAt: new Date().toISOString(),
+      generalNotes: plan.generalNotes || '',
       pinnedIds: plan.pinnedIds,
       scoutNotes: plan.scoutNotes,
       scoutStatuses: plan.scoutStatuses,
@@ -611,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadAnchor.click();
     downloadAnchor.remove();
 
-    showToast(`Exported "${plan.name}" file! You can now text or email this file.`);
+    showToast(`Exported "${plan.name}" file! You can now text, email, or pass this file to AI.`);
   });
 
   // Import Plan JSON File (OVERRIDE EXISTING PLAN WITH SAME NAME TO PREVENT RUNAWAYS)
@@ -629,6 +733,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const importedPinned = Array.isArray(imported.pinnedIds) ? imported.pinnedIds : [];
         const importedNotes = imported.scoutNotes || {};
         const importedStatuses = imported.scoutStatuses || {};
+        const importedGeneralNotes = imported.generalNotes || imported.generalPlanNotes || '';
 
         const isOverride = !!plansStore.plans[planName];
 
@@ -636,6 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
         plansStore.plans[planName] = {
           name: planName,
           updatedAt: new Date().toISOString(),
+          generalNotes: importedGeneralNotes,
           pinnedIds: importedPinned,
           scoutNotes: importedNotes,
           scoutStatuses: importedStatuses
@@ -649,9 +755,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentView === 'plan') renderShootPlan();
 
         if (isOverride) {
-          showToast(`Overrode existing plan "${planName}" with imported data (${importedPinned.length} poses)!`);
+          showToast(`Overrode existing plan "${planName}" with imported data & voice dictations!`);
         } else {
-          showToast(`Successfully imported new shoot plan "${planName}" (${importedPinned.length} poses)!`);
+          showToast(`Successfully imported new shoot plan "${planName}"!`);
         }
 
         // Reset file input
@@ -668,21 +774,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const plan = getActivePlan();
     const pinnedItems = LOCATIONS_DATA.filter(item => plan.pinnedIds.includes(item.id));
 
-    if (pinnedItems.length === 0) {
-      showToast('Your active shoot plan has no pinned poses to share.', 'error');
-      return;
-    }
-
     let summaryText = `📸 SENIOR PORTRAIT SHOOT PLAN: "${plan.name}"\n`;
     summaryText += `Total Poses: ${pinnedItems.length}\n`;
+
+    if (plan.generalNotes) {
+      summaryText += `------------------------------------\n`;
+      summaryText += `📝 GENERAL NOTES & VISION:\n${plan.generalNotes}\n`;
+    }
+
     summaryText += `------------------------------------\n`;
 
-    pinnedItems.forEach((item, idx) => {
-      summaryText += `${idx + 1}. ${item.isLocalSpot ? '⭐ ' : ''}${item.title} (${item.vibe} / ${item.category})\n`;
-      if (plan.scoutNotes[item.id]) {
-        summaryText += `   Note: ${plan.scoutNotes[item.id]}\n`;
-      }
-    });
+    if (pinnedItems.length > 0) {
+      pinnedItems.forEach((item, idx) => {
+        summaryText += `${idx + 1}. ${item.isLocalSpot ? '⭐ ' : ''}${item.title} (${item.vibe} / ${item.category})\n`;
+        if (plan.scoutNotes[item.id]) {
+          summaryText += `   Note: ${plan.scoutNotes[item.id]}\n`;
+        }
+      });
+    } else {
+      summaryText += `(No pinned poses yet)\n`;
+    }
 
     summaryText += `\nExported from Senior Portrait Scout App.`;
 
