@@ -85,14 +85,27 @@
     <div id="shoot-plan-section" class="shoot-plan-section">
       <div class="plan-header">
         <div>
-          <h2>My Custom Shoot Plan & Local Spot Checklist</h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Track your pinned poses, log local addresses in your area, and generate a printable shot list.</p>
+          <h2>Senior Portrait Shoot Plan & Sharing</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Organize multiple shoot plans, exchange JSON plan files with family, and track local scouting notes.</p>
         </div>
-        <div class="plan-actions">
-          <button id="print-plan-btn" class="btn-action" style="color: var(--accent-teal); border-color: var(--accent-teal);">🖨️ Print / Save PDF</button>
-          <button id="export-json-btn" class="btn-action">💾 Export Backup (JSON)</button>
-          <button id="import-json-btn" class="btn-action">📂 Import Backup</button>
-          <input type="file" id="json-file-input" accept=".json" style="display: none;">
+
+        <!-- Plan Selection & Management Dock -->
+        <div class="plan-management-row">
+          <div class="plan-selector-box">
+            <label for="plan-select" style="font-size: 0.85rem; font-weight: 700; color: var(--accent-teal);">📁 Active Shoot Plan:</label>
+            <select id="plan-select" class="plan-select-dropdown"></select>
+            <button id="new-plan-btn" class="btn-action" title="Create a new named shoot plan">➕ New Plan</button>
+            <button id="rename-plan-btn" class="btn-action" title="Rename current shoot plan">✏️ Rename</button>
+            <button id="delete-plan-btn" class="btn-action" style="color: var(--accent-red); border-color: rgba(239,68,68,0.3);" title="Delete current plan">🗑️ Delete</button>
+          </div>
+
+          <div class="plan-actions">
+            <button id="export-json-btn" class="btn-action active" style="background: var(--accent-teal); color: #0b0f19; font-weight: 700;" title="Download plan JSON file to text or email">📥 Export / Share Plan (.json)</button>
+            <button id="import-json-btn" class="btn-action" style="color: var(--accent-purple); border-color: var(--accent-purple);" title="Upload plan JSON file (overrides existing plan with same name)">📤 Import Plan (.json)</button>
+            <button id="share-code-btn" class="btn-action" title="Copy text summary to clipboard for text/email">📋 Copy Text Summary</button>
+            <button id="print-plan-btn" class="btn-action" title="Print shot list or save as PDF">🖨️ Print / PDF</button>
+            <input type="file" id="json-file-input" accept=".json,.scout" style="display: none;">
+          </div>
         </div>
       </div>
 
@@ -101,13 +114,22 @@
 
   </main>
 
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
   <!-- Lightbox Modal -->
   <div id="modal-overlay" class="modal-overlay">
     <div class="modal-container">
       <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
       
       <div class="modal-image-col">
-        <img id="modal-img" src="" alt="" class="modal-img">
+        <div id="modal-img-wrapper-zoom" class="modal-img-wrapper-zoom" title="Click image to toggle Zoom (2.5x)">
+          <img id="modal-img" src="" alt="" class="modal-img">
+        </div>
+        <div class="zoom-toolbar">
+          <button id="zoom-toggle-btn" class="zoom-btn">🔍 Zoom In (2.5x)</button>
+          <a id="open-full-res-btn" href="#" target="_blank" class="zoom-btn">↗ Open Original Image File</a>
+        </div>
       </div>
 
       <div class="modal-info-col">

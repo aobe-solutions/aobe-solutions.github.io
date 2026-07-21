@@ -1,7 +1,4 @@
-.DS_Store
-Thumbs.db
+node_modules/
 *.log
-.vscode/
-.idea/
-dist/
-build/
+audit_output.json
+.DS_Store
