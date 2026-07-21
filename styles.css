@@ -1166,9 +1166,23 @@ a {
 
 .deals-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
   gap: 32px;
   margin-bottom: 60px;
+}
+
+.deals-grid.three-col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.deal-price-save {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #047857;
+  background-color: #d1fae5;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #a7f3d0;
 }
 
 .deal-card {
