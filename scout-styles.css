@@ -88,26 +88,62 @@ body {
 .nav-link-btn {
   color: var(--text-muted);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 0.92rem;
   transition: all 0.2s ease;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.85rem;
   border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .nav-link-btn:hover, .nav-link-btn.active {
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-glass);
+}
+
+.nav-link-btn.active {
+  background: var(--accent-teal);
+  color: #0b0f19;
+  border-color: var(--accent-teal);
+}
+
+.plan-nav-highlight {
+  border: 1px solid var(--accent-teal-glow);
+  color: var(--accent-teal);
 }
 
 .plan-counter-badge {
-  background: var(--accent-teal);
-  color: #0b0f19;
-  font-weight: 700;
+  background: #0b0f19;
+  color: var(--accent-teal);
+  font-weight: 800;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 0.8rem;
-  margin-left: 6px;
+  margin-left: 4px;
+}
+
+.nav-link-btn.active .plan-counter-badge {
+  background: #0b0f19;
+  color: var(--accent-teal);
+}
+
+@media (max-width: 768px) {
+  .scout-nav-container {
+    padding: 0.5rem 1rem;
+  }
+  .nav-link-desktop {
+    display: none !important;
+  }
+  .nav-links {
+    gap: 0.5rem;
+  }
+  .nav-link-btn {
+    font-size: 0.82rem;
+    padding: 0.4rem 0.65rem;
+  }
 }
 
 /* Hero Section */

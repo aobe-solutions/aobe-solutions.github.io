@@ -509,13 +509,17 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGallery();
   });
 
+  const controlsDockWrapper = document.querySelector('.controls-dock-wrapper');
+
   // View Switching
   viewGalleryBtn.addEventListener('click', () => {
     currentView = 'gallery';
     viewGalleryBtn.classList.add('active');
     viewPlanBtn.classList.remove('active');
     gallerySection.style.display = 'block';
+    if (controlsDockWrapper) controlsDockWrapper.style.display = 'block';
     shootPlanSection.classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   viewPlanBtn.addEventListener('click', () => {
@@ -523,8 +527,10 @@ document.addEventListener('DOMContentLoaded', () => {
     viewPlanBtn.classList.add('active');
     viewGalleryBtn.classList.remove('active');
     gallerySection.style.display = 'none';
+    if (controlsDockWrapper) controlsDockWrapper.style.display = 'none';
     shootPlanSection.classList.add('active');
     renderShootPlan();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   // --- PLAN MANAGEMENT EVENT LISTENERS ---
