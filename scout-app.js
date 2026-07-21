@@ -165,12 +165,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Categories & Vibes derived from LOCATIONS_DATA
-  const categories = ['All', '⭐ Local Parker & Hood Co.', ...new Set(LOCATIONS_DATA.map(item => item.category))];
-  const vibes = ['All', ...new Set(LOCATIONS_DATA.map(item => item.vibe))];
+  // Safe data getter
+  function getLocationsData() {
+    return window.LOCATIONS_DATA || (typeof LOCATIONS_DATA !== 'undefined' ? LOCATIONS_DATA : []);
+  }
+
+  // Categories & Vibes derived safely from LOCATIONS_DATA
+  const allData = getLocationsData();
+  const categories = ['All', '⭐ Local Parker & Hood Co.', ...new Set(allData.map(item => item.category))];
+  const vibes = ['All', ...new Set(allData.map(item => item.vibe))];
 
   // Render Filter Chips
   function renderFilterChips() {
+    if (!categoryChipsContainer || !vibeChipsContainer) return;
     categoryChipsContainer.innerHTML = '';
     categories.forEach(cat => {
       const chip = document.createElement('button');
@@ -263,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render Plan Select Dropdown
   function renderPlanSelector() {
+    if (!planSelect) return;
     planSelect.innerHTML = '';
     Object.keys(plansStore.plans).forEach(planName => {
       const option = document.createElement('option');
@@ -278,13 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update Pin Badge Counter
   function updateBadgeCounter() {
     const currentPlan = getActivePlan();
-    planCounterBadge.textContent = currentPlan.pinnedIds.length;
+    if (planCounterBadge) planCounterBadge.textContent = currentPlan.pinnedIds.length;
   }
 
   // Filter Logic
   function getFilteredItems() {
-    return LOCATIONS_DATA.filter(item => {
-      const matchesGender = activeGender === 'all' || item.gender === activeGender;
+    const data = getLocationsData();
+    return data.filter(item => {
+      const itemGender = (item.gender || 'female').toLowerCase();
+      const matchesGender = activeGender === 'all' || itemGender === activeGender.toLowerCase();
       let matchesCategory = true;
 
       if (activeCategory === '⭐ Local Parker & Hood Co.') {
@@ -295,11 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const matchesVibe = activeVibe === 'All' || item.vibe === activeVibe;
       const matchesSearch = searchQuery === '' || 
-        item.title.toLowerCase().includes(searchQuery) ||
-        item.poseDescription.toLowerCase().includes(searchQuery) ||
-        item.originalCaption.toLowerCase().includes(searchQuery) ||
-        item.category.toLowerCase().includes(searchQuery) ||
-        item.originalLocation.toLowerCase().includes(searchQuery);
+        (item.title && item.title.toLowerCase().includes(searchQuery)) ||
+        (item.poseDescription && item.poseDescription.toLowerCase().includes(searchQuery)) ||
+        (item.originalCaption && item.originalCaption.toLowerCase().includes(searchQuery)) ||
+        (item.category && item.category.toLowerCase().includes(searchQuery)) ||
+        (item.originalLocation && item.originalLocation.toLowerCase().includes(searchQuery));
 
       return matchesGender && matchesCategory && matchesVibe && matchesSearch;
     });

@@ -1,4 +1,4 @@
-const LOCATIONS_DATA = [
+window.LOCATIONS_DATA = [
   {
     "id": "granbury_opera_house",
     "title": "Historic Granbury Opera House Staircase",
@@ -735,3 +735,4 @@ const LOCATIONS_DATA = [
     "googleMapsQuery": "portrait studio headshot rental"
   }
 ];
+var LOCATIONS_DATA = window.LOCATIONS_DATA;
