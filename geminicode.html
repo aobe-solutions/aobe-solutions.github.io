@@ -722,10 +722,10 @@
             <div class="deliverable-box">
                 <div class="deliverable-header">
                     <span class="deliverable-tag">Deliverable 2</span>
-                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Automated Task Activity Sets</h2>
+                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Automated Task &amp; Event Activity Sets (Plus Tier Native)</h2>
                 </div>
                 <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-                    Replaces manual shorthand notes (<code>NSO</code>, <code>SLO</code>, <code>PS</code>, <code>(+30?)</code>) and eliminates manual suspense date calculations. When an order enters a stage, Insightly automatically attaches the required checklist with relative due dates:
+                    Replaces manual shorthand notes (<code>NSO</code>, <code>SLO</code>, <code>PS</code>, <code>(+30?)</code>) and eliminates manual suspense date calculations. Under Insightly's native <strong>Plus tier</strong>, Activity Sets generate both action checklists (Tasks) and calendar milestones (Events) linked to locked anchor dates:
                 </p>
 
                 <div class="table-box">
@@ -734,7 +734,7 @@
                             <tr>
                                 <th>Stage Gate</th>
                                 <th>Activity Set</th>
-                                <th>Auto-Generated Tasks</th>
+                                <th>Generated Tasks &amp; Events</th>
                                 <th>Due Date Logic</th>
                                 <th>Operational Benefit</th>
                             </tr>
@@ -743,51 +743,51 @@
                             <tr>
                                 <td><strong>1. Order Intake</strong></td>
                                 <td><code>AS_Intake</code></td>
-                                <td>Verify Customer Verbiage & Location</td>
+                                <td>Task: Verify Customer Verbiage &amp; Sign Location</td>
                                 <td>+1 Business Day</td>
-                                <td>Prevents new orders from stalling before layout design begins.</td>
+                                <td>Prevents new orders from stalling in "Pending Verbiage" before layout design begins.</td>
                             </tr>
                             <tr>
                                 <td><strong>2. Layout Proofing</strong></td>
                                 <td><code>AS_Proofing</code></td>
-                                <td>Follow-up #1: Layout Approval<br>Follow-up #2: Stalled Proof Alert</td>
+                                <td>Task #1: Layout Approval Follow-up<br>Task #2: Stalled Proof Alert</td>
                                 <td>+3 Business Days<br>+6 Business Days</td>
-                                <td>Automates follow-up cadence; eliminates orders sitting idle in "Pending Response".</td>
+                                <td>Automates follow-up cadence; eliminates orders sitting idle awaiting customer response.</td>
                             </tr>
                             <tr>
                                 <td><strong>3. Permit Filing</strong></td>
                                 <td><code>AS_Permits</code></td>
-                                <td>Follow-up on Municipal Permit Status</td>
+                                <td>Task: Follow-up on Municipal Permit Status</td>
                                 <td>+4 Business Days (or Friday)</td>
-                                <td>Bypassable for Parker County. Ensures city approvals never hold up installation.</td>
+                                <td>Bypassable for Parker County / Brock. Ensures city approvals never hold up installation.</td>
                             </tr>
                             <tr>
-                                <td><strong>4. Production & Route</strong></td>
+                                <td><strong>4. Production &amp; Route</strong></td>
                                 <td><code>AS_Production</code></td>
-                                <td>Assemble Sign & Schedule Route</td>
-                                <td>2 Days Before Delivery Date</td>
-                                <td>Pins shop fabrication and truck loading directly to the locked delivery date.</td>
+                                <td>Task: Assemble Sign &amp; Prep Route<br><strong>Event: D- Delivery Drop-off</strong></td>
+                                <td>2 Days Before Delivery<br><strong>Target Delivery Date</strong></td>
+                                <td>Pins shop fabrication and truck loading directly to the locked delivery date; auto-creates the delivery calendar entry.</td>
                             </tr>
                             <tr>
                                 <td><strong>5. Active / Invoiced</strong></td>
                                 <td><code>AS_ActiveBilling</code></td>
-                                <td>30-Day Renewal Outreach</td>
+                                <td>Task: 30-Day Renewal Outreach</td>
                                 <td>5 Days Before Renewal Date</td>
-                                <td>Replaces <code>(+30?)</code>. Prompts timely customer renewal or sign retrieval.</td>
+                                <td>Replaces <code>(+30?)</code>. Prompts timely customer renewal or schedules sign recovery.</td>
                             </tr>
                             <tr>
                                 <td><strong>6. Sign Retrieval</strong></td>
                                 <td><code>AS_Retrieval</code></td>
-                                <td>Route Sign Pickup & Reclaim Hardware</td>
-                                <td>+2 Days from HardStop</td>
-                                <td>Dispatches truck to retrieve signs from non-renewing clients so hardware is restocked.</td>
+                                <td>Task: Route Sign Pickup<br><strong>Event: P- Pickup &amp; Reclaim Hardware</strong></td>
+                                <td>+2 Days from Expiration<br><strong>HardStop Expiry Date</strong></td>
+                                <td>Dispatches truck to retrieve signs from non-renewing clients so frames and letter hardware return to shop inventory.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <p style="font-size: 0.88rem; color: var(--text-main); margin-top: 0.75rem;">
-                    <strong>Key Outcome:</strong> Tasks only appear when action is required. Eliminates the 29+ false overdue alarms cluttering your daily dashboard.
+                    <strong>Key Outcome:</strong> Tasks and calendar events only appear when action is required. Eliminates the 29+ false overdue alarms cluttering your daily dashboard, all within your current Plus tier.
                 </p>
             </div>
         </section>
@@ -797,33 +797,42 @@
             <div class="deliverable-box">
                 <div class="deliverable-header">
                     <span class="deliverable-tag">Deliverable 3</span>
-                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Automated Email Integration & Outlook Plugin</h2>
+                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Google Workspace Calendar &amp; Outlook Integration (Plus Tier Native)</h2>
                 </div>
                 <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-                    Connects Outlook directly to Insightly to eliminate copy-pasting and automate customer follow-up when waiting on information:
+                    Connects Insightly directly to your daily communication and scheduling hubs—Google Calendar for daily truck dispatch and Outlook for client proofing:
                 </p>
 
                 <div class="card-grid" style="margin-top: 1rem; margin-bottom: 0;">
-                    <div class="card" style="border-top: 3px solid var(--primary);">
-                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">1-Click Outlook Archiving Plugin</h4>
-                        <ul style="font-size: 0.88rem; color: var(--text-muted);">
-                            <li>• An Insightly sidebar opens directly beside incoming and outgoing emails in Outlook.</li>
-                            <li>• 1-Click <strong>"Save to Insightly"</strong> links the entire email thread and all artwork proofs directly to the job.</li>
-                            <li>• Eliminates manual copy-pasting of email text and typing <code>EFC</code> into task comments.</li>
+                    <div class="card" style="border-top: 3px solid #2563eb;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.2rem;">📅</span>
+                            <h4 style="color: #1e40af; margin: 0;">Google Workspace Calendar 2-Way Sync</h4>
+                        </div>
+                        <ul style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; padding-left: 1.1rem;">
+                            <li>• <strong>No Disruption to Daily Truck Habit:</strong> Works natively on your Google Calendar app (<code>MAGNFT SIGNS</code>) so you view daily stops on your phone in the truck just like today.</li>
+                            <li>• <strong>Automated Route Milestone Sync:</strong> Scheduled drop-offs (<code>D-</code>) and hardware pickups (<code>P-</code>) auto-populate on the calendar with customer address, contact phone, and approved sign text.</li>
+                            <li>• <strong>2-Way Reschedule Sync:</strong> If weather delays cause an install or pickup date to be dragged to a new day on Google Calendar, the update syncs right back to Insightly automatically.</li>
+                            <li>• <strong>100% Plus Tier Native:</strong> Configured directly through Insightly's built-in Calendar Sync—<strong>no Professional tier upgrade required</strong>.</li>
                         </ul>
                     </div>
-                    <div class="card" style="border-top: 3px solid var(--success);">
-                        <h4 style="color: var(--success); margin-bottom: 0.5rem;">Preloaded Quick Email Templates</h4>
-                        <ul style="font-size: 0.88rem; color: var(--text-muted);">
-                            <li>• Standardized email templates preloaded for: <em>Waiting on Verbiage</em>, <em>Layout Proof Approval</em>, and <em>30-Day Renewal Notice</em>.</li>
-                            <li>• 1-Click assisted sending directly from Outlook or Insightly when a stage task alerts you.</li>
-                            <li>• Every sent message logs automatically to the job history timeline.</li>
+
+                    <div class="card" style="border-top: 3px solid #16a34a;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.2rem;">✉️</span>
+                            <h4 style="color: #15803d; margin: 0;">Outlook Plugin &amp; Preloaded Quick Templates</h4>
+                        </div>
+                        <ul style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; padding-left: 1.1rem;">
+                            <li>• <strong>1-Click Email Archiving:</strong> Insightly sidebar inside Outlook allows 1-click saving of email threads and artwork proof attachments directly to the job record. Eliminates typing <code>EFC</code>/<code>ETC</code> into notes.</li>
+                            <li>• <strong>Preloaded Assisted Templates:</strong> Standardized quick-send templates for <em>Waiting on Verbiage</em> (<code>PEND VERB</code>), <em>Layout Proof Approval</em>, and <em>30-Day Renewal Notice</em>.</li>
+                            <li>• <strong>Human Oversight Safeguard:</strong> 1-Click assisted sending allows you to review and personalize messages in 5 seconds before dispatch, preventing accidental automated emails if a client just phoned.</li>
+                            <li>• <strong>Audit History:</strong> Every sent email logs automatically to the client's Insightly activity history.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div style="background: var(--slate-100); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-top: 1rem; font-size: 0.84rem; color: var(--text-muted);">
-                    ℹ️ <strong>Plan Tier Clarification:</strong> Quick message templates are configured for <strong>1-click assisted sending</strong> under your current <strong>Insightly Plus tier</strong>. This provides human oversight so emails are never sent accidentally if a client just phoned. Hands-off background automated sending and workflow automation rules require upgrading to the <strong>Insightly Professional tier (+$20/user/mo)</strong>, which can be deployed in a future phase if desired.
+                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 0.85rem 1.1rem; margin-top: 1rem; font-size: 0.85rem; color: #1e3a8a;">
+                    💡 <strong>Plan Tier Verification &amp; Cost Savings:</strong> Both the <strong>Google Workspace Calendar 2-Way Sync</strong> and <strong>1-Click Outlook Assisted Templates</strong> are 100% functional out-of-the-box on your existing <strong>Insightly Plus tier ($29/user/mo)</strong>. You do <strong>not</strong> need to upgrade to the Professional tier ($49/user/mo) for this engagement. Background hands-off rules (headless background sending without 1-click review) are reserved for Professional, but Plus provides complete automation for your daily dispatch and communication needs.
                 </div>
             </div>
         </section>
