@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Proposals & Deliverables Portal · AoBe Solutions Group</title>
+  <meta name="description" content="Secure client gateway to access confidential proposals, operational blueprints, and technology scopes of work prepared by AoBe Solutions Group.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <style>
+    /* Portal Custom Styles */
+    .portal-hero {
+      position: relative;
+      padding: 130px 0 70px 0;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      overflow: hidden;
+      min-height: 82vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .portal-box-container {
+      max-width: 580px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .portal-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 2.75rem 2.25rem;
+      box-shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.08);
+      margin-top: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .portal-icon-badge {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      color: #2563eb;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.12);
+    }
+
+    .portal-input-wrapper {
+      margin: 1.75rem 0 1.25rem 0;
+    }
+
+    .pin-code-input {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px 16px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 6px;
+      text-align: center;
+      text-transform: uppercase;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      color: #0f172a;
+      background-color: #f8fafc;
+      transition: all 0.2s ease;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .pin-code-input:focus {
+      outline: none;
+      border-color: #2563eb;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .portal-btn {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      margin-top: 0.5rem;
+    }
+
+    .portal-btn:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+    }
+
+    .portal-status-alert {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .portal-status-alert.error {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+    }
+
+    .portal-status-alert.success {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+    }
+
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    .portal-helper-text {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-top: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .portal-helper-text a {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+
+    /* Trust & Process Section */
+    .portal-info-section {
+      padding: 60px 0 80px 0;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .portal-grid-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.75rem;
+    }
+
+    .portal-grid-item .item-num {
+      width: 32px;
+      height: 32px;
+      background: #0d9488;
+      color: #ffffff;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .portal-grid-item h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: #0f172a;
+    }
+
+    .portal-grid-item p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .portal-grid {
+        grid-template-columns: 1fr;
+      }
+      .portal-card {
+        padding: 2rem 1.25rem;
+      }
+      .pin-code-input {
+        font-size: 1.35rem;
+        letter-spacing: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="header-nav" id="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo-link">
+        <div class="logo-icon-container">
+          <img src="logo.png" alt="AoBe Solutions Group Logo" class="logo-img">
+        </div>
+        <div class="logo-text">
+          <span class="company-name">AoBe</span>
+          <span class="company-sub">SOLUTIONS GROUP</span>
+        </div>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="desktop-menu">
+        <a href="index.html#home" class="menu-link">Home</a>
+        <a href="index.html#services" class="menu-link">Services</a>
+        <a href="index.html#about" class="menu-link">About Us</a>
+        <a href="client-proposals.html" class="menu-link active">Client Proposals</a>
+        <a href="senior-portrait-scout.html" class="menu-link">Portrait Scout</a>
+        <a href="index.html#contact" class="menu-link btn-menu-cta">Free Consultation</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="mobile-dropdown" id="mobile-dropdown">
+    <nav class="mobile-dropdown-menu">
+      <a href="index.html#home" class="mobile-link">Home</a>
+      <a href="index.html#services" class="mobile-link">Services</a>
+      <a href="index.html#about" class="mobile-link">About Us</a>
+      <a href="client-proposals.html" class="mobile-link">Client Proposals</a>
+      <a href="senior-portrait-scout.html" class="mobile-link">Portrait Scout</a>
+      <a href="index.html#contact" class="mobile-link mobile-btn-cta">Free Consultation</a>
+    </nav>
+  </div>
+
+  <!-- Client Portal Hero Section -->
+  <section class="portal-hero">
+    <!-- SVG Technical Circuit Lines Background -->
+    <div class="circuit-background">
+      <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-50,150 H300 L380,230 V450 L420,490 H600" stroke="rgba(13, 148, 136, 0.08)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M1200,100 H1000 L950,150 V300 L900,350 H750" stroke="rgba(37, 99, 235, 0.07)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="300" cy="150" r="4" fill="rgba(13, 148, 136, 0.2)"/>
+        <circle cx="950" cy="150" r="4" fill="rgba(37, 99, 235, 0.2)"/>
+      </svg>
+    </div>
+
+    <div class="section-container">
+      <div class="portal-box-container">
+        <span class="hero-badge">🔒 Confidential Client Gateway</span>
+        <h1 style="margin-top: 0.75rem; font-size: 2.3rem;">Client Access Portal</h1>
+        <p style="color: #64748b; font-size: 1.05rem; margin-top: 0.5rem;">
+          Enter your unique 6-character Client Access PIN to view your custom project proposal, architecture blueprint, and scope of work.
+        </p>
+
+        <!-- Access Card -->
+        <div class="portal-card" id="portal-card">
+          <div class="portal-icon-badge">🔑</div>
+          <h2 style="font-size: 1.45rem; color: #0f172a; margin-bottom: 0.25rem;">Unlock Your Deliverables</h2>
+          <p style="font-size: 0.88rem; color: #64748b;">Provided in your engagement invitation email</p>
+
+          <form id="portal-pin-form" onsubmit="handlePortalSubmit(event)">
+            <div class="portal-input-wrapper">
+              <input 
+                type="text" 
+                id="portal-pin-input" 
+                class="pin-code-input" 
+                maxlength="6" 
+                placeholder="e.g. MS0920" 
+                autofocus 
+                autocomplete="off" 
+                spellcheck="false"
+              />
+            </div>
+            
+            <button type="submit" class="portal-btn" id="portal-submit-btn">
+              Unlock Proposal &rarr;
+            </button>
+          </form>
+
+          <!-- Alert Container -->
+          <div id="portal-alert" class="portal-status-alert"></div>
+
+          <div class="portal-helper-text">
+            <span>Client access codes are case-insensitive. Need help locating your PIN? Contact your consultant at <a href="mailto:efrain@aobe.fyi?subject=Client%20Portal%20Access%20PIN%20Request">efrain@aobe.fyi</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How Client Delivery Works -->
+  <section class="portal-info-section">
+    <div class="section-container">
+      <div style="text-align: center; max-width: 650px; margin: 0 auto;">
+        <span class="section-tag" style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 9999px; font-weight: 700; font-size: 0.78rem; text-transform: uppercase;">The AoBe Standard</span>
+        <h2 style="margin-top: 0.5rem; font-size: 1.85rem;">How Our Client Engagements Work</h2>
+        <p style="color: #64748b; font-size: 0.95rem; margin-top: 0.25rem;">
+          Every project is delivered through a transparent, high-touch process designed for non-technical small business operators.
+        </p>
+      </div>
+
+      <div class="portal-grid">
+        <div class="portal-grid-item">
+          <div class="item-num">1</div>
+          <h3>Operational Diagnostic</h3>
+          <p>We analyze your daily workflows, software bottlenecks, and existing tools to pinpoint high-ROI automation opportunities without disrupting daily operations.</p>
+        </div>
+
+        <div class="portal-grid-item">
+          <div class="item-num">2</div>
+          <h3>Interactive Blueprint</h3>
+          <p>Your confidential proposal details the exact before-and-after operational shift, visual stage gates, clear deliverables, and a fixed, guaranteed investment.</p>
+        </div>
+
+        <div class="portal-grid-item">
+          <div class="item-num">3</div>
+          <h3>Rapid Handover & Support</h3>
+          <p>Rapid 1-week deployment followed by hands-on live training with incoming real-world orders and a 14-day fine-tuning warranty for complete confidence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="section-container footer-container">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <span class="logo-text-footer">AoBe</span>
+          <span class="company-sub-footer">SOLUTIONS GROUP</span>
+        </div>
+        <p>Providing simple, approachable, and practical technology solutions to help local small businesses thrive.</p>
+      </div>
+      <div class="footer-right">
+        <span class="copyright">© 2026 AoBe Solutions Group. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="app.js"></script>
+  <script>
+    // Client PIN Directory Mapping
+    const CLIENT_DIRECTORY = {
+      'MS0920': {
+        name: 'MagnetSigns',
+        project: 'Insightly Operational Engine',
+        url: 'magnetsigns-optimization.html?auth=MS0920'
+      },
+      'PS0721': {
+        name: 'Pilates Studio',
+        project: 'Hardware Purchasing & Setup Proposal',
+        url: 'pilates-studio-tech.html'
+      },
+      'STUDIO': {
+        name: 'Pilates Studio',
+        project: 'Hardware Purchasing & Setup Proposal',
+        url: 'pilates-studio-tech.html'
+      }
+    };
+
+    function handlePortalSubmit(e) {
+      if (e) e.preventDefault();
+      
+      const pinInput = document.getElementById('portal-pin-input');
+      const alertBox = document.getElementById('portal-alert');
+      const portalCard = document.getElementById('portal-card');
+      const submitBtn = document.getElementById('portal-submit-btn');
+      const rawPin = pinInput.value.trim().toUpperCase();
+
+      if (!rawPin) {
+        showAlert('Please enter your 6-character Client Access PIN.', 'error');
+        pinInput.focus();
+        return;
+      }
+
+      if (CLIENT_DIRECTORY[rawPin]) {
+        const client = CLIENT_DIRECTORY[rawPin];
+        
+        // Save session state
+        try {
+          sessionStorage.setItem('aobe_portal_pin', rawPin);
+          sessionStorage.setItem('aobe_portal_client', client.name);
+        } catch (err) {}
+
+        // Success Feedback
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Verifying Authorization...';
+        showAlert(`<strong>✓ Access Verified:</strong> ${client.name} &bull; ${client.project}. Loading confidential blueprint...`, 'success');
+
+        // Smooth redirect
+        setTimeout(() => {
+          window.location.href = client.url;
+        }, 600);
+      } else {
+        // Invalid PIN
+        showAlert(`<strong>Invalid Access PIN:</strong> No active proposal was found matching code "${rawPin}". Please verify the code in your engagement email or contact AoBe Solutions.`, 'error');
+        
+        portalCard.classList.remove('shake');
+        void portalCard.offsetWidth; // trigger reflow
+        portalCard.classList.add('shake');
+
+        pinInput.value = '';
+        pinInput.focus();
+      }
+    }
+
+    function showAlert(htmlMessage, type) {
+      const alertBox = document.getElementById('portal-alert');
+      alertBox.className = `portal-status-alert ${type}`;
+      alertBox.innerHTML = htmlMessage;
+      alertBox.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

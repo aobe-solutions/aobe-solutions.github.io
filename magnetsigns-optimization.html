@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagnetSigns · Insightly Operational Engine | AoBe Solutions Group</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
+            --bg-color: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --slate-100: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* PIN Screen */
+        #pin-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .pin-box {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .pin-box h2 { margin-bottom: 0.5rem; color: var(--primary); }
+        .pin-subtitle { margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.9rem; }
+
+        .pin-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .pin-input {
+            width: 200px;
+            padding: 12px;
+            font-size: 1.4rem;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            letter-spacing: 6px;
+            font-weight: 700;
+        }
+
+        .pin-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: var(--primary-dark); }
+
+        #pin-error {
+            color: var(--danger);
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Proposal Content */
+        #proposal-content {
+            display: none;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .prepared-by {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: var(--white);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        h1 { font-size: 2.2rem; color: var(--text-main); margin-bottom: 0.25rem; }
+        h2 { font-size: 1.45rem; color: var(--primary); margin: 2.25rem 0 0.85rem 0; display: flex; align-items: center; gap: 0.5rem; }
+        h3 { font-size: 1.15rem; color: var(--text-main); margin-bottom: 0.5rem; }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.04);
+            border: 1px solid var(--border);
+        }
+
+        .card.bad { border-top: 4px solid var(--danger); }
+        .card.good { border-top: 4px solid var(--success); }
+
+        .card ul {
+            list-style: none;
+            margin-top: 0.75rem;
+            color: var(--text-main);
+            font-size: 0.92rem;
+        }
+
+        .card ul li {
+            padding: 0.45rem 0;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card ul li:last-child { border-bottom: none; }
+
+        /* Deliverable Section Cards */
+        .deliverable-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 0.02);
+        }
+
+        .deliverable-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .deliverable-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* Visual Kanban Pipeline */
+        .pipeline-container {
+            background: var(--slate-100);
+            padding: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .pipeline-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+            min-width: 760px;
+        }
+
+        .kanban-col {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 0.75rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kanban-col.optional {
+            background: var(--warning-light);
+            border-color: #fde68a;
+        }
+
+        .col-step {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .kanban-col.optional .col-step { background: var(--warning); }
+
+        .col-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.35rem;
+        }
+
+        .col-action {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: auto;
+            padding-top: 0.5rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        .undo-note {
+            background: var(--warning-light);
+            border-left: 4px solid var(--warning);
+            padding: 0.85rem 1.25rem;
+            border-radius: 0 6px 6px 0;
+            margin-top: 0.75rem;
+            font-size: 0.88rem;
+            color: #92400e;
+        }
+
+        /* Table Box */
+        .table-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 10px 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--bg-color); }
+
+        .chip {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .color-dot {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        /* Proof of Value */
+        .comparison-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .scenario-tag {
+            background: var(--primary-light);
+            border: 1px solid #bfdbfe;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.25rem;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 680px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: count;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .step-list.old li::before {
+            counter-increment: count;
+            content: counter(count);
+            position: absolute;
+            left: 0; top: 2px;
+            width: 18px; height: 18px;
+            background: var(--danger-light);
+            color: var(--danger);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: bold;
+        }
+
+        .step-list.new li::before {
+            content: "✓";
+            position: absolute;
+            left: 0; top: 2px;
+            width: 18px; height: 18px;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: bold;
+        }
+
+        /* Investment & Scope */
+        .investment-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            line-height: 1;
+            margin: 0.75rem 0;
+        }
+
+        .scope-list {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .scope-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .scope-list li:last-child { border-bottom: none; }
+
+        .scope-list.in li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .scope-list.out li::before {
+            content: "×";
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .top-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn-print {
+            background: var(--white);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-print:hover { background: #f1f5f9; }
+
+        @media print {
+            #pin-screen { display: none !important; }
+            #proposal-content { display: block !important; padding: 0; }
+            .top-action-bar { display: none !important; }
+            body { background: #fff; }
+            .card, .deliverable-box, .pipeline-container, .table-box, .comparison-box, .investment-box {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PIN Protection Screen -->
+    <div id="pin-screen">
+        <div class="pin-box">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🔒</div>
+            <h2>Client Proposal Access</h2>
+            <p class="pin-subtitle">MagnetSigns • Insightly Optimization Pilot</p>
+            <div class="pin-input-group">
+                <input type="text" id="pin-input" class="pin-input" maxlength="6" placeholder="MS0920" autofocus autocomplete="off" style="text-transform: uppercase;">
+            </div>
+            <button class="btn" onclick="verifyPin()">Unlock Proposal</button>
+            <div id="pin-error">Incorrect PIN. Please enter your 6-character client access code (e.g. MS0920).</div>
+            <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">
+                AoBe Solutions Group Client Gateway
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Proposal Content -->
+    <div id="proposal-content">
+        
+        <div class="top-action-bar">
+            <a href="client-proposals.html" style="text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                &larr; AoBe Client Portal
+            </a>
+            <button class="btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+        </div>
+
+        <header>
+            <div>
+                <h1>Insightly Optimization Pilot</h1>
+                <p style="font-size: 1.1rem; color: var(--text-muted);">Process Architecture & Operational Automation for MagnetSigns</p>
+            </div>
+            <div class="prepared-by">
+                <strong>AoBe Solutions Group</strong><br>
+                Efrain Estevez, Technology Consultant<br>
+                1-Week Turnaround • Fixed Investment: $800
+            </div>
+        </header>
+
+        <!-- Current Bottlenecks vs Future State -->
+        <section>
+            <h2>Current Bottlenecks vs. The 3 Core Deliverables</h2>
+            <div class="card-grid">
+                <div class="card bad">
+                    <h3 style="color: var(--danger);">Current State (The Single-Task Workaround)</h3>
+                    <ul>
+                        <li><span style="color: var(--danger); font-weight: bold;">✕</span> <strong>Single-Task Overload:</strong> One task holds all notes, email copy-pastes, proofs, and rolling reminders.</li>
+                        <li><span style="color: var(--danger); font-weight: bold;">✕</span> <strong>29+ False Overdue Alarms:</strong> Normal client/permit waiting periods turn tasks red/overdue, burying actual urgent work.</li>
+                        <li><span style="color: var(--danger); font-weight: bold;">✕</span> <strong>Sliding Due Dates:</strong> Pushing due dates forward for follow-ups erases the customer's promised delivery date.</li>
+                        <li><span style="color: var(--danger); font-weight: bold;">✕</span> <strong>Manual Category Juggling:</strong> Scrolling through 20+ makeshift categories to track status.</li>
+                    </ul>
+                </div>
+                <div class="card good">
+                    <h3 style="color: var(--success);">Future State (The 3 Core Deliverables)</h3>
+                    <ul>
+                        <li><span style="color: var(--success); font-weight: bold;">✓</span> <strong>Deliverable 1 (Pipeline & Kanban):</strong> 5 visual columns replace category scrolling and permanently lock the Target Delivery Date.</li>
+                        <li><span style="color: var(--success); font-weight: bold;">✓</span> <strong>Deliverable 2 (Task Activity Sets):</strong> Automated task checklists replace shorthand codes and automate suspense dates.</li>
+                        <li><span style="color: var(--success); font-weight: bold;">✓</span> <strong>Deliverable 3 (Email Integration & Plugin):</strong> 1-click Outlook archiving and automated follow-ups when waiting on client responses.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deliverable 1 -->
+        <section>
+            <div class="deliverable-box">
+                <div class="deliverable-header">
+                    <span class="deliverable-tag">Deliverable 1</span>
+                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Pipeline Stages & Daily Kanban Board</h2>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Replaces the 20+ makeshift task categories and eliminates the sliding due date problem. Each sign order is a visual card that progresses across 5 standardized stage gates:
+                </p>
+
+                <div class="pipeline-container">
+                    <div class="pipeline-board">
+                        <div class="kanban-col">
+                            <div class="col-step">1</div>
+                            <div class="col-title">Order Intake</div>
+                            <div style="font-size: 0.78rem; color: var(--primary);">Replaces NSO</div>
+                            <div class="col-action">Capture sign text & lock Target Delivery Date</div>
+                        </div>
+                        <div class="kanban-col">
+                            <div class="col-step">2</div>
+                            <div class="col-title">Layout Proofing</div>
+                            <div style="font-size: 0.78rem; color: var(--primary);">Replaces SENT LO</div>
+                            <div class="col-action">Proof sent; auto-schedules 3-day follow-up</div>
+                        </div>
+                        <div class="kanban-col optional">
+                            <div class="col-step">3</div>
+                            <div class="col-title">Permit Filing ⚠️</div>
+                            <div style="font-size: 0.78rem; color: #b45309;">(Skip for Parker Co.)</div>
+                            <div class="col-action">Municipal tracking (NRH, FTW)</div>
+                        </div>
+                        <div class="kanban-col">
+                            <div class="col-step">4</div>
+                            <div class="col-title">Production & Route</div>
+                            <div style="font-size: 0.78rem; color: var(--primary);">Build & Deliver</div>
+                            <div class="col-action">Pinned to Target Delivery Date</div>
+                        </div>
+                        <div class="kanban-col">
+                            <div class="col-step">5</div>
+                            <div class="col-title">Active / Invoiced</div>
+                            <div style="font-size: 0.78rem; color: var(--success);">Clover AP / QB AI</div>
+                            <div class="col-action">30-day renewal check-in gate</div>
+                        </div>
+                    </div>
+
+                    <div class="undo-note">
+                        💡 <strong>The Non-Tech "Undo" Safeguard:</strong> If an order for a permit-free city (like Parker County) is accidentally dragged into the Permit column, simply drag it forward into Production. The single permit task can be deleted or marked complete in one click. Workflows never freeze.
+                    </div>
+                </div>
+
+                <p style="font-size: 0.88rem; color: var(--text-main); margin-top: 0.75rem;">
+                    <strong>Key Outcome:</strong> A dedicated <code>Target Delivery Date</code> field anchors the promised delivery day permanently. Due dates on follow-up tasks can move freely without ever erasing the installation deadline.
+                </p>
+            </div>
+        </section>
+
+        <!-- Deliverable 2 -->
+        <section>
+            <div class="deliverable-box">
+                <div class="deliverable-header">
+                    <span class="deliverable-tag">Deliverable 2</span>
+                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Automated Task Activity Sets</h2>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Replaces manual shorthand notes (<code>NSO</code>, <code>SLO</code>, <code>PS</code>, <code>(+30?)</code>) and eliminates manual suspense date calculations. When an order enters a stage, Insightly automatically attaches the required checklist with relative due dates:
+                </p>
+
+                <div class="table-box">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stage Gate</th>
+                                <th>Activity Set</th>
+                                <th>Auto-Generated Tasks</th>
+                                <th>Due Date Logic</th>
+                                <th>Operational Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Order Intake</strong></td>
+                                <td><code>AS_Intake</code></td>
+                                <td>Verify Customer Verbiage & Location</td>
+                                <td>+1 Business Day</td>
+                                <td>Prevents new orders from stalling before layout design begins.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Layout Proofing</strong></td>
+                                <td><code>AS_Proofing</code></td>
+                                <td>Follow-up #1: Layout Approval<br>Follow-up #2: Stalled Proof Alert</td>
+                                <td>+3 Business Days<br>+6 Business Days</td>
+                                <td>Automates follow-up cadence; eliminates orders sitting idle in "Pending Response".</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Permit Filing</strong></td>
+                                <td><code>AS_Permits</code></td>
+                                <td>Follow-up on Municipal Permit Status</td>
+                                <td>+4 Business Days (or Friday)</td>
+                                <td>Bypassable for Parker County. Ensures city approvals never hold up installation.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Production & Route</strong></td>
+                                <td><code>AS_Production</code></td>
+                                <td>Assemble Sign & Schedule Route</td>
+                                <td>2 Days Before Delivery Date</td>
+                                <td>Pins shop fabrication and truck loading directly to the locked delivery date.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5. Active / Invoiced</strong></td>
+                                <td><code>AS_ActiveBilling</code></td>
+                                <td>30-Day Renewal Outreach</td>
+                                <td>5 Days Before Renewal Date</td>
+                                <td>Replaces <code>(+30?)</code>. Prompts timely customer renewal or sign retrieval.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>6. Sign Retrieval</strong></td>
+                                <td><code>AS_Retrieval</code></td>
+                                <td>Route Sign Pickup & Reclaim Hardware</td>
+                                <td>+2 Days from HardStop</td>
+                                <td>Dispatches truck to retrieve signs from non-renewing clients so hardware is restocked.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="font-size: 0.88rem; color: var(--text-main); margin-top: 0.75rem;">
+                    <strong>Key Outcome:</strong> Tasks only appear when action is required. Eliminates the 29+ false overdue alarms cluttering your daily dashboard.
+                </p>
+            </div>
+        </section>
+
+        <!-- Deliverable 3 -->
+        <section>
+            <div class="deliverable-box">
+                <div class="deliverable-header">
+                    <span class="deliverable-tag">Deliverable 3</span>
+                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-main);">Automated Email Integration & Outlook Plugin</h2>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Connects Outlook directly to Insightly to eliminate copy-pasting and automate customer follow-up when waiting on information:
+                </p>
+
+                <div class="card-grid" style="margin-top: 1rem; margin-bottom: 0;">
+                    <div class="card" style="border-top: 3px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">1-Click Outlook Archiving Plugin</h4>
+                        <ul style="font-size: 0.88rem; color: var(--text-muted);">
+                            <li>• An Insightly sidebar opens directly beside incoming and outgoing emails in Outlook.</li>
+                            <li>• 1-Click <strong>"Save to Insightly"</strong> links the entire email thread and all artwork proofs directly to the job.</li>
+                            <li>• Eliminates manual copy-pasting of email text and typing <code>EFC</code> into task comments.</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--success);">
+                        <h4 style="color: var(--success); margin-bottom: 0.5rem;">Preloaded Quick Email Templates</h4>
+                        <ul style="font-size: 0.88rem; color: var(--text-muted);">
+                            <li>• Standardized email templates preloaded for: <em>Waiting on Verbiage</em>, <em>Layout Proof Approval</em>, and <em>30-Day Renewal Notice</em>.</li>
+                            <li>• 1-Click assisted sending directly from Outlook or Insightly when a stage task alerts you.</li>
+                            <li>• Every sent message logs automatically to the job history timeline.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: var(--slate-100); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-top: 1rem; font-size: 0.84rem; color: var(--text-muted);">
+                    ℹ️ <strong>Plan Tier Clarification:</strong> Quick message templates are configured for <strong>1-click assisted sending</strong> under your current <strong>Insightly Plus tier</strong>. This provides human oversight so emails are never sent accidentally if a client just phoned. Hands-off background automated sending and workflow automation rules require upgrading to the <strong>Insightly Professional tier (+$20/user/mo)</strong>, which can be deployed in a future phase if desired.
+                </div>
+            </div>
+        </section>
+
+        <!-- The Translation Matrix -->
+        <section>
+            <h2>The Translation Matrix</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.95rem;">
+                Mapping your existing shorthand codes, task categories, and calendar colors into native Insightly features:
+            </p>
+
+            <div class="table-box" style="margin-top: 0; margin-bottom: 2rem;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Current Code / Habit</th>
+                            <th>Category</th>
+                            <th>New Insightly Feature</th>
+                            <th>Operational Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="chip">VM</span> (Voicemail Log)</td>
+                            <td>Communication</td>
+                            <td><strong>Native "Log Call" Button</strong></td>
+                            <td>Logs caller & message details with 1 click; links directly to customer record.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">EFC</span> / <span class="chip">ETC</span> (Email From/To)</td>
+                            <td>Communication</td>
+                            <td><strong>Insightly Outlook Add-in</strong></td>
+                            <td>1-click save links full email threads and design proofs without copy-pasting.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">NSO</span> / <span class="chip">VERB</span></td>
+                            <td>Workflow</td>
+                            <td><strong>Stage 1: Order Intake</strong></td>
+                            <td>Replaces "NSO - VERBIAGE REQUESTED / PENDING" category; highlights orders awaiting wording.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">SLO</span> / <span class="chip">SENT LO</span></td>
+                            <td>Workflow</td>
+                            <td><strong>Stage 2: Layout Proofing</strong></td>
+                            <td>Replaces "SENT LO" category; automatically schedules 3-day follow-up.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">PS</span> / <span class="chip">PERMIT NEEDED</span></td>
+                            <td>Permit</td>
+                            <td><strong>Stage 3: Permit Filing</strong></td>
+                            <td>Bypassable column. Clearly separates permitted cities (NRH) from no-permit cities (Parker Co.).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">DEL 9/14</span> / <span class="chip">DEL 10/2</span></td>
+                            <td>Deadlines</td>
+                            <td><strong>Custom Field: Target Delivery Date</strong></td>
+                            <td>Locked date field. Stops delivery dates from being buried in task titles or erased by moving due dates.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">(+30?)</span> (30-Day Check)</td>
+                            <td>Retention</td>
+                            <td><strong>Custom Field: Renewal Date</strong></td>
+                            <td>Auto-generates task 5 days prior to prompt 30-day renewal or schedule sign retrieval.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="color-dot" style="background: #eab308;"></span><strong>Yellow</strong> (In Work)</td>
+                            <td>Calendar</td>
+                            <td><strong>Cards in Stages 1, 2, or 4</strong></td>
+                            <td>Visible on the board instantly without re-coloring calendar entries.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="color-dot" style="background: #22c55e;"></span><strong>Green</strong> (Layout Approved)</td>
+                            <td>Calendar</td>
+                            <td><strong>Stage Transition: 2 &rarr; 4</strong></td>
+                            <td>Proof sign-off moves card directly to fabrication and route dispatch.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="color-dot" style="background: #ef4444;"></span><strong>Red</strong> (HardStop / Pickup)</td>
+                            <td>Calendar</td>
+                            <td><strong>Stage 6: Sign Retrieval</strong></td>
+                            <td>Creates pickup route task to bring sign hardware back into active inventory.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="color-dot" style="background: #3b82f6;"></span><strong>Blue (AI / AP)</strong></td>
+                            <td>Billing</td>
+                            <td><strong>Field: Billing Method = Clover AP</strong></td>
+                            <td>Flags card-on-file accounts that auto-charge on the 1st of the month.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="color-dot" style="background: #8b5cf6;"></span><strong>Purple (AI)</strong></td>
+                            <td>Billing</td>
+                            <td><strong>Field: Billing Method = QB Manual</strong></td>
+                            <td>Flags accounts requiring a manual QuickBooks invoice.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Proof of Value: The Kanban Board in Action -->
+        <section>
+            <h2>Proof of Value: The Kanban Board in Action</h2>
+            <div class="comparison-box">
+                <div class="scenario-tag">
+                    📍 <strong>Real Order Scenario:</strong> Customer calls with an event date (Oct 8–10). Follow-up email received with wording. Proof sent and approved. Delivery promised by Oct 8.
+                </div>
+
+                <div class="two-col">
+                    <div>
+                        <h4 style="color: var(--danger); margin-bottom: 0.75rem;">Old Way: The Single-Task Scroll (~12 min)</h4>
+                        <ol class="step-list old">
+                            <li>Create single task. Type voicemail notes into comments.</li>
+                            <li>When wording arrives, copy/paste email text into comments with <code>EFC VERB</code>.</li>
+                            <li>Change category dropdown from 20 options to "NSO - VERBIAGE RECEIVED".</li>
+                            <li>Email layout proof; paste graphic into comments with <code>SLO</code>.</li>
+                            <li>Change category dropdown to "SENT LO".</li>
+                            <li>Task goes overdue; manually push due date out — <em>erasing the Oct 8 delivery date</em>.</li>
+                            <li>Type <code>(DEL 10/8)</code> into task title and calendar event so the deadline isn't lost.</li>
+                        </ol>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--success); margin-bottom: 0.75rem;">New Way: The Kanban Drag (~25 sec)</h4>
+                        <ol class="step-list new">
+                            <li><strong>Create Order:</strong> Click "Add Opportunity" under Customer; enter <strong>Target Delivery Date: Oct 8</strong>.</li>
+                            <li><strong>Send Proof:</strong> Click "Save to Insightly" in Outlook sidebar to link proof to the order.</li>
+                            <li><strong>Drag to Layout Proofing:</strong> Card automatically schedules a 3-day follow-up task.</li>
+                            <li><strong>Client Approves:</strong> Drag card directly to Production (or Permit Filing). Fabrication checklist is created instantly.</li>
+                            <li><em>Delivery Date (Oct 8) stays permanently locked in place; zero false overdue alarms.</em></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scope & Investment -->
+        <section>
+            <h2>Scope of Work & Fixed Investment</h2>
+            <div class="investment-box">
+                <h3 style="color: var(--primary);">1-Week Turnaround Pilot</h3>
+                <div class="price">$800</div>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Fixed Fee • 5 Business Days • 100% Operational Continuity</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3 style="color: var(--success);">In-Scope Deliverables</h3>
+                    <ul class="scope-list in">
+                        <li><strong>Deliverable 1:</strong> 5-Stage Universal Pipeline & Kanban Board configured in Insightly.</li>
+                        <li><strong>Deliverable 2:</strong> Automated Task Activity Sets for intake, proofing, permits, and dispatch.</li>
+                        <li><strong>Deliverable 3:</strong> Automated Email Integration & Insightly Outlook Add-in configured.</li>
+                        <li><strong>Custom Fields Built:</strong> Target Delivery Date, Renewal Date, Billing Method, Sign Verbiage.</li>
+                        <li><strong>Live 1-on-1 Training (45 min):</strong> Hands-on walkthrough using incoming real orders.</li>
+                        <li><strong>Workflow Cheat Sheet:</strong> 1-page visual quick-reference guide.</li>
+                        <li><strong>14-Day Priority Warranty:</strong> Direct support for questions and fine-tuning.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--text-muted);">Out of Scope (Future Phases)</h3>
+                    <ul class="scope-list out">
+                        <li><strong>Historical task migration:</strong> Existing tasks run out naturally to avoid confusion.</li>
+                        <li><strong>Direct API coding:</strong> Direct automated software sync for Clover/QuickBooks.</li>
+                        <li><strong>Excel macro rewrites:</strong> Rebuilding the 1,000-row recurring spreadsheet.</li>
+                        <li><strong>Daily data entry:</strong> Routine clerical order input.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Acceptance -->
+        <div style="background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.75rem; margin-top: 2rem;">
+            <h3>Project Acceptance</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Authorized acceptance to begin the Insightly Optimization Pilot for MagnetSigns under the terms above:
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="border-top: 1px solid var(--border); padding-top: 0.5rem; font-size: 0.85rem;">
+                    <strong>AoBe Solutions Group:</strong> Efrain Estevez<br>
+                    <span style="color: var(--text-muted);">Date: September 20, 2026</span>
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 0.5rem; font-size: 0.85rem;">
+                    <strong>Accepted For MagnetSigns:</strong> _______________________<br>
+                    <span style="color: var(--text-muted);">Date: ________________________</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PIN Script -->
+    <script>
+        document.getElementById('pin-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyPin();
+            }
+        });
+
+        function verifyPin() {
+            const pin = document.getElementById('pin-input').value.trim().toUpperCase();
+            const errorMsg = document.getElementById('pin-error');
+            
+            // PIN is MS0920 (MagnetSigns + Month/Day)
+            if (pin === 'MS0920') {
+                unlockProposal(false);
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('pin-input').value = '';
+                document.getElementById('pin-input').focus();
+            }
+        }
+
+        function unlockProposal(fromPortal) {
+            document.getElementById('pin-screen').style.display = 'none';
+            document.getElementById('proposal-content').style.display = 'block';
+            window.scrollTo(0, 0);
+            if (fromPortal) {
+                const toast = document.createElement('div');
+                toast.innerHTML = '🔒 Verified via AoBe Client Portal &bull; Welcome MagnetSigns Operations';
+                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:8px;font-size:0.85rem;box-shadow:0 4px 12px rgba(0,0,0,0.18);z-index:9999;transition:opacity 0.5s;';
+                document.body.appendChild(toast);
+                setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 3500);
+            }
+        }
+
+        // Check if unlocked from AoBe Client Portal
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const authParam = (urlParams.get('auth') || urlParams.get('pin') || '').toUpperCase();
+            const sessionPin = (sessionStorage.getItem('aobe_portal_pin') || '').toUpperCase();
+            
+            if (authParam === 'MS0920' || sessionPin === 'MS0920') {
+                unlockProposal(true);
+            }
+        });
+    </script>
+</body>
+</html>
