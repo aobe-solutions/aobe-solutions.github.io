@@ -889,7 +889,55 @@
                             <td>Auto-generates task 5 days prior to prompt 30-day renewal or schedule sign retrieval.</td>
                         </tr>
                         <tr>
-                            <td><span class="color-dot" style="background: #eab308;"></span><strong>Yellow</strong> (In Work)</td>
+                            <td><span class="chip">D-</span> (Delivery) &amp; <span class="chip">(01)</span> (Route Stop)</td>
+                            <td>Logistics</td>
+                            <td><strong>Stage 4 Delivery Date + Google Calendar Sync</strong></td>
+                            <td>Automates drop-off milestones directly onto your Google Calendar; eliminates manually typing and numbering route entries.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">P-</span> (Pickup / Sign Retrieval)</td>
+                            <td>Logistics</td>
+                            <td><strong>Stage 6: Sign Retrieval + Auto-Task</strong></td>
+                            <td>Pins pickup date to the calendar so trucks automatically recover frames and letter hardware when rentals expire.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">R-</span> (Roster Renewal)</td>
+                            <td>Retention</td>
+                            <td><strong>Custom Field: Renewal Date + AS_ActiveBilling</strong></td>
+                            <td>Replaces spreadsheet scanning; auto-prompts renewal outreach 5 days before recurring billing date.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">C-</span> (Copy / Letter Change)</td>
+                            <td>Workflow</td>
+                            <td><strong>Opportunity Type: Copy Change</strong></td>
+                            <td>Differentiates on-site sign text changes from new installations so route stops are clear.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">SV-</span> (Service Visit)</td>
+                            <td>Operations</td>
+                            <td><strong>Insightly Task: Site Inspection / Repair</strong></td>
+                            <td>Schedules wind/weather repairs, hardware checks, and site inspections directly under customer record.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">DNI</span> (Do Not Invoice)</td>
+                            <td>Billing</td>
+                            <td><strong>Field: Billing Method = Do Not Invoice</strong></td>
+                            <td>Flags trade, barter, or prepaid accounts to prevent accidental invoicing.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">PEND VERB</span> (Pending Verbiage)</td>
+                            <td>Workflow</td>
+                            <td><strong>Stage 1 Intake + Quick Follow-Up Template</strong></td>
+                            <td>Replaces typing "PEND VERB" on calendar entries; 1-click email follows up with client immediately.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="chip">(FTW) (NRH) (BROCK) (W)</span></td>
+                            <td>Territory</td>
+                            <td><strong>Custom Field: City / Jurisdiction</strong></td>
+                            <td>Identifies municipal rules instantly; confirms whether Stage 3 (Permits) is mandatory or bypassable.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="color-dot" style="background: #eab308;"></span><strong>Yellow</strong> (In Work / Pending)</td>
                             <td>Calendar</td>
                             <td><strong>Cards in Stages 1, 2, or 4</strong></td>
                             <td>Visible on the board instantly without re-coloring calendar entries.</td>
@@ -901,10 +949,10 @@
                             <td>Proof sign-off moves card directly to fabrication and route dispatch.</td>
                         </tr>
                         <tr>
-                            <td><span class="color-dot" style="background: #ef4444;"></span><strong>Red</strong> (HardStop / Pickup)</td>
+                            <td><span class="color-dot" style="background: #ef4444;"></span><strong>Red / Coral</strong> (Pickup / P-)</td>
                             <td>Calendar</td>
                             <td><strong>Stage 6: Sign Retrieval</strong></td>
-                            <td>Creates pickup route task to bring sign hardware back into active inventory.</td>
+                            <td>Creates pickup route task to bring sign hardware back into active shop inventory.</td>
                         </tr>
                         <tr>
                             <td><span class="color-dot" style="background: #3b82f6;"></span><strong>Blue (AI / AP)</strong></td>
@@ -922,7 +970,23 @@
                 </table>
             </div>
 
-            <div style="background: var(--slate-100); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-top: -1rem; margin-bottom: 2rem; font-size: 0.84rem; color: var(--text-muted);">
+            <!-- Google Calendar Integration Callout -->
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: -0.75rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <span style="font-size: 1.4rem;">📅</span>
+                    <div>
+                        <h4 style="color: #1e40af; margin-bottom: 0.35rem; font-size: 1rem;">Google Workspace Integration: Automated Google Calendar Events</h4>
+                        <p style="font-size: 0.88rem; color: #334155; line-height: 1.5; margin-bottom: 0.5rem;">
+                            Because MagnetSigns uses Google Workspace, Insightly syncs events directly to your <strong>Google Calendar</strong>. When an order locks in a <strong>Target Delivery Date</strong> (<code>D-</code>) or schedules a <strong>Sign Retrieval</strong> (<code>P-</code>), Insightly automatically populates the event on your daily truck route calendar.
+                        </p>
+                        <p style="font-size: 0.84rem; color: #475569; line-height: 1.4;">
+                            <strong>Your Daily Experience:</strong> You keep checking your daily schedule on your phone's Google Calendar app exactly as you do today, but you never have to type shorthand, copy-paste addresses, or manually sequence route numbers again.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--slate-100); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 2rem; font-size: 0.84rem; color: var(--text-muted);">
                 ℹ️ <strong>Workflow Coverage Guarantee:</strong> We will capture and audit all existing shorthand codes, makeshift categories, and calendar color indexes during the engagement to ensure 100% coverage and seamless continuity in the new operational flow.
             </div>
         </section>
