@@ -285,7 +285,7 @@
         <div class="portal-card" id="portal-card">
           <div class="portal-icon-badge">🔑</div>
           <h2 style="font-size: 1.45rem; color: #0f172a; margin-bottom: 0.25rem;">Unlock Your Deliverables</h2>
-          <p style="font-size: 0.88rem; color: #64748b;">Provided in your engagement invitation email</p>
+          <p style="font-size: 0.88rem; color: #64748b;">Format: 2-Letter Client Code + 4-Digit PIN</p>
 
           <form id="portal-pin-form" onsubmit="handlePortalSubmit(event)">
             <div class="portal-input-wrapper">
@@ -294,7 +294,7 @@
                 id="portal-pin-input" 
                 class="pin-code-input" 
                 maxlength="6" 
-                placeholder="e.g. MS0920" 
+                placeholder="e.g. AB1234" 
                 autofocus 
                 autocomplete="off" 
                 spellcheck="false"
@@ -310,7 +310,7 @@
           <div id="portal-alert" class="portal-status-alert"></div>
 
           <div class="portal-helper-text">
-            <span>Client access codes are case-insensitive. Need help locating your PIN? Contact your consultant at <a href="mailto:efrain@aobe.fyi?subject=Client%20Portal%20Access%20PIN%20Request">efrain@aobe.fyi</a></span>
+            <span>Client access codes are case-insensitive. Don't have your access PIN? Contact your consultant at <a href="mailto:efrain@aobe.fyi?subject=Client%20Portal%20Access%20PIN%20Request">efrain@aobe.fyi</a></span>
           </div>
         </div>
       </div>
@@ -374,7 +374,7 @@
       'MS0920': {
         name: 'MagnetSigns',
         project: 'Insightly Operational Engine',
-        url: 'magnetsigns-optimization.html?auth=MS0920'
+        url: 'geminicode.html?auth=MS0920'
       },
       'PS0721': {
         name: 'Pilates Studio',
@@ -423,7 +423,7 @@
         }, 600);
       } else {
         // Invalid PIN
-        showAlert(`<strong>Invalid Access PIN:</strong> No active proposal was found matching code "${rawPin}". Please verify the code in your engagement email or contact AoBe Solutions.`, 'error');
+        showAlert(`<strong>Invalid Access PIN:</strong> No active proposal was found matching code "${rawPin}". Please enter your 6-character client access code (2-Letter Client Code + 4-digit PIN) provided in your proposal notification.`, 'error');
         
         portalCard.classList.remove('shake');
         void portalCard.offsetWidth; // trigger reflow
