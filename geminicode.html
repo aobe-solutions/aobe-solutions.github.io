@@ -1064,24 +1064,14 @@
             if (!pin) return false;
             pin = pin.toUpperCase();
             
-            // Allow anchor/kickoff code
-            if (pin === 'MS0920') return true;
+            // Dynamic check: 'MS' is fixed; the 4 digits strictly match current date (MMDD)
+            // Valid until midnight; rolls over at 12:01 AM automatically
+            const now = new Date();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const expectedPin = 'MS' + mm + dd;
 
-            // Check dynamic MS + current/rolling MMDD date (e.g. MS0920 today, MS0921 tomorrow)
-            if (pin.startsWith('MS') && pin.length === 6) {
-                const datePart = pin.substring(2);
-                const pad = (n) => String(n).padStart(2, '0');
-                const now = new Date();
-                
-                // Allow today, past 7 days, and next 2 days for timezone/grace
-                for (let offset = -7; offset <= 2; offset++) {
-                    const d = new Date(now);
-                    d.setDate(d.getDate() + offset);
-                    const mmdd = pad(d.getMonth() + 1) + pad(d.getDate());
-                    if (datePart === mmdd) return true;
-                }
-            }
-            return false;
+            return pin === expectedPin;
         }
 
         function verifyPin() {
