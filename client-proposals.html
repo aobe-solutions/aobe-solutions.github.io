@@ -294,7 +294,7 @@
                 id="portal-pin-input" 
                 class="pin-code-input" 
                 maxlength="6" 
-                placeholder="e.g. AB1234" 
+                placeholder="AB1234" 
                 autofocus 
                 autocomplete="off" 
                 spellcheck="false"
@@ -369,24 +369,48 @@
   <!-- Script -->
   <script src="app.js"></script>
   <script>
-    // Client PIN Directory Mapping
-    const CLIENT_DIRECTORY = {
-      'MS0920': {
-        name: 'MagnetSigns',
-        project: 'Insightly Operational Engine',
-        url: 'geminicode.html?auth=MS0920'
-      },
-      'PS0721': {
-        name: 'Pilates Studio',
-        project: 'Hardware Purchasing & Setup Proposal',
-        url: 'pilates-studio-tech.html'
-      },
-      'STUDIO': {
-        name: 'Pilates Studio',
-        project: 'Hardware Purchasing & Setup Proposal',
-        url: 'pilates-studio-tech.html'
+    // Helper to generate rolling MMDD date strings (today, plus grace window for timezone/delayed opening)
+    function getDynamicDateCodes(daysBack = 5, daysForward = 2) {
+      const codes = [];
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      
+      for (let offset = -daysBack; offset <= daysForward; offset++) {
+        const d = new Date(now);
+        d.setDate(d.getDate() + offset);
+        codes.push(pad(d.getMonth() + 1) + pad(d.getDate()));
       }
-    };
+      return codes;
+    }
+
+    // Dynamic Client Directory Resolver
+    function resolveClientPin(rawPin) {
+      // Direct overrides / aliases
+      const STATIC_MAP = {
+        'PS0721': { name: 'Pilates Studio', project: 'Hardware Purchasing & Setup Proposal', url: 'pilates-studio-tech.html' },
+        'STUDIO': { name: 'Pilates Studio', project: 'Hardware Purchasing & Setup Proposal', url: 'pilates-studio-tech.html' },
+        'MS0920': { name: 'MagnetSigns', project: 'Insightly Operational Engine', url: 'geminicode.html?auth=MS0920' }
+      };
+
+      if (STATIC_MAP[rawPin]) {
+        return STATIC_MAP[rawPin];
+      }
+
+      // Dynamic check: MS + current/rolling MMDD date (e.g. MS0920 today, MS0921 tomorrow)
+      if (rawPin.startsWith('MS') && rawPin.length === 6) {
+        const datePart = rawPin.substring(2);
+        const validDates = getDynamicDateCodes(7, 2);
+        if (validDates.includes(datePart)) {
+          return {
+            name: 'MagnetSigns',
+            project: 'Insightly Operational Engine',
+            url: `geminicode.html?auth=${rawPin}`
+          };
+        }
+      }
+
+      return null;
+    }
 
     function handlePortalSubmit(e) {
       if (e) e.preventDefault();
@@ -403,9 +427,9 @@
         return;
       }
 
-      if (CLIENT_DIRECTORY[rawPin]) {
-        const client = CLIENT_DIRECTORY[rawPin];
-        
+      const client = resolveClientPin(rawPin);
+
+      if (client) {
         // Save session state
         try {
           sessionStorage.setItem('aobe_portal_pin', rawPin);

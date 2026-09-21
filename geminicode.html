@@ -108,9 +108,9 @@
         /* Proposal Content */
         #proposal-content {
             display: none;
-            max-width: 980px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 2.5rem 1.5rem;
+            padding: 2.5rem 2rem 7rem 2rem;
             animation: fadeIn 0.4s ease-in;
         }
 
@@ -467,9 +467,126 @@
 
         .btn-print:hover { background: #f1f5f9; }
 
+        /* Fixed Floating Bottom Action Dock */
+        #fixed-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+            z-index: 900;
+            padding: 12px 0;
+        }
+
+        .fixed-bar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .fixed-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .fixed-bar-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid #bfdbfe;
+        }
+
+        .fixed-bar-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .fixed-bar-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .fixed-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-dock-accept {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #16a34a;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 11px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .btn-dock-accept:hover {
+            background: #15803d;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+        }
+
+        .btn-dock-ask {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .btn-dock-ask:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        @media (max-width: 840px) {
+            .fixed-bar-left {
+                display: none;
+            }
+            .fixed-bar-container {
+                justify-content: center;
+            }
+            .fixed-bar-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         @media print {
+            #fixed-bottom-bar { display: none !important; }
             #pin-screen { display: none !important; }
-            #proposal-content { display: block !important; padding: 0; }
+            #proposal-content { display: block !important; padding: 0 !important; }
             .top-action-bar { display: none !important; }
             body { background: #fff; }
             .card, .deliverable-box, .pipeline-container, .table-box, .comparison-box, .investment-box {
@@ -883,15 +1000,15 @@
         <!-- Acceptance & Next Steps -->
         <section style="background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 2.25rem 2rem; margin-top: 2rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);">
             <span style="background: var(--success-light); color: var(--success); font-weight: 700; font-size: 0.8rem; padding: 4px 14px; border-radius: 9999px; text-transform: uppercase; border: 1px solid #a7f3d0; letter-spacing: 0.05em;">Ready for Deployment</span>
-            <h2 style="font-size: 1.75rem; color: var(--text-main); margin-top: 0.75rem; margin-bottom: 0.5rem;">Accept Proposal &amp; Kick Off Pilot</h2>
+            <h2 style="font-size: 1.75rem; color: var(--text-main); margin-top: 0.75rem; margin-bottom: 0.5rem;">Accept Proposal &amp; Request Invoice</h2>
             <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; margin: 0 auto 1.75rem auto;">
-                Fixed investment: <strong>$800</strong> &bull; Turnaround: <strong>5 Business Days</strong> &bull; <strong>100% Operational Continuity Guarantee</strong>. Click below to confirm acceptance and trigger Day 1 setup, or send any questions directly to our team.
+                Fixed investment: <strong>$800</strong> &bull; Turnaround: <strong>5 Business Days</strong> &bull; <strong>100% Operational Continuity Guarantee</strong>. Click below to accept the proposal and request your PayPal invoice to schedule Day 1 kickoff, or submit questions directly to our team.
             </p>
 
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.75rem;">
-                <a href="mailto:efrain@aobe.fyi?subject=Acceptance%3A%20MagnetSigns%20Insightly%20Optimization%20Pilot%20(%24800%20Fixed%20Fee)&amp;body=Hi%20Efrain%2C%0D%0A%0D%0AWe%20accept%20the%20MagnetSigns%20Insightly%20Optimization%20Pilot%20proposal%20(%24800%20fixed%20fee%2C%201-week%20turnaround).%0D%0A%0D%0APlease%20let%20us%20know%20the%20next%20steps%20to%20schedule%20our%20kickoff%20and%20begin%20Day%201%20setup.%0D%0A%0D%0AThanks%2C%0D%0AMagnetSigns%20Operations" 
+                <a href="mailto:efrain@aobe.fyi?subject=Acceptance%20%26%20PayPal%20Invoice%20Request%3A%20MagnetSigns%20Insightly%20Optimization%20Pilot%20(%24800)&amp;body=Hi%20Efrain%2C%0D%0A%0D%0AWe%20accept%20the%20MagnetSigns%20Insightly%20Optimization%20Pilot%20proposal%20(%24800%20fixed%20fee%2C%201-week%20turnaround).%0D%0A%0D%0APlease%20send%20over%20the%20PayPal%20invoice%20for%20%24800%20to%20this%20email%20so%20we%20can%20complete%20payment%20and%20schedule%20our%20Day%201%20kickoff.%0D%0A%0D%0AClient%20Contact%20Name%3A%20%5BName%5D%0D%0ABilling%20Email%20for%20PayPal%3A%20%5BEmail%5D%0D%0APhone%3A%20%5BPhone%5D%0D%0A%0D%0AThanks%2C%0D%0AMagnetSigns%20Operations" 
                    style="display: inline-flex; align-items: center; gap: 8px; background: #16a34a; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25); transition: all 0.2s ease;">
-                    ✓ Accept Proposal &amp; Start Pilot
+                    ✓ Accept &amp; Request PayPal Invoice
                 </a>
 
                 <a href="mailto:efrain@aobe.fyi?subject=Question%3A%20MagnetSigns%20Insightly%20Optimization%20Proposal&amp;body=Hi%20Efrain%2C%0D%0A%0D%0AI%20have%20a%20question%20regarding%20the%20Insightly%20proposal%20for%20MagnetSigns%3A%0D%0A%0D%0A%5BEnter%20question%20or%20notes%20here%5D%0D%0A%0D%0AThanks%2C%0D%0AMagnetSigns%20Operations" 
@@ -906,11 +1023,32 @@
                     <strong>Email:</strong> <a href="mailto:efrain@aobe.fyi" style="color: var(--primary);">efrain@aobe.fyi</a>
                 </div>
                 <div style="text-align: right;">
-                    <strong>Terms:</strong> Fixed Fee ($800) &bull; 14-Day Priority Warranty<br>
-                    <strong>Date:</strong> September 20, 2026
+                    <strong>Billing:</strong> Secure PayPal Invoice ($800 Net)<br>
+                    <strong>Warranty:</strong> 14-Day Priority Support
                 </div>
             </div>
         </section>
+
+        <!-- Fixed Floating Bottom Action Dock -->
+        <div id="fixed-bottom-bar">
+            <div class="fixed-bar-container">
+                <div class="fixed-bar-left">
+                    <span class="fixed-bar-badge">🔒 Fixed-Fee Pilot</span>
+                    <div>
+                        <div class="fixed-bar-title">MagnetSigns &bull; Insightly Optimization Engine</div>
+                        <div class="fixed-bar-sub">$800 Fixed Investment &bull; 5-Day Delivery &bull; PayPal Invoice</div>
+                    </div>
+                </div>
+                <div class="fixed-bar-actions">
+                    <a href="mailto:efrain@aobe.fyi?subject=Question%3A%20MagnetSigns%20Insightly%20Optimization%20Proposal&amp;body=Hi%20Efrain%2C%0D%0A%0D%0AI%20have%20a%20question%20regarding%20the%20Insightly%20proposal%20for%20MagnetSigns%3A%0D%0A%0D%0A%5BEnter%20question%20or%20notes%20here%5D%0D%0A%0D%0AThanks%2C%0D%0AMagnetSigns%20Operations" class="btn-dock-ask">
+                        💬 Ask Questions
+                    </a>
+                    <a href="mailto:efrain@aobe.fyi?subject=Acceptance%20%26%20PayPal%20Invoice%20Request%3A%20MagnetSigns%20Insightly%20Optimization%20Pilot%20(%24800)&amp;body=Hi%20Efrain%2C%0D%0A%0D%0AWe%20accept%20the%20MagnetSigns%20Insightly%20Optimization%20Pilot%20proposal%20(%24800%20fixed%20fee%2C%201-week%20turnaround).%0D%0A%0D%0APlease%20send%20over%20the%20PayPal%20invoice%20for%20%24800%20to%20this%20email%20so%20we%20can%20complete%20payment%20and%20schedule%20our%20Day%201%20kickoff.%0D%0A%0D%0AClient%20Contact%20Name%3A%20%5BName%5D%0D%0ABilling%20Email%20for%20PayPal%3A%20%5BEmail%5D%0D%0APhone%3A%20%5BPhone%5D%0D%0A%0D%0AThanks%2C%0D%0AMagnetSigns%20Operations" class="btn-dock-accept">
+                        ✓ Accept &amp; Request PayPal Invoice
+                    </a>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -922,12 +1060,35 @@
             }
         });
 
+        function isValidPin(pin) {
+            if (!pin) return false;
+            pin = pin.toUpperCase();
+            
+            // Allow anchor/kickoff code
+            if (pin === 'MS0920') return true;
+
+            // Check dynamic MS + current/rolling MMDD date (e.g. MS0920 today, MS0921 tomorrow)
+            if (pin.startsWith('MS') && pin.length === 6) {
+                const datePart = pin.substring(2);
+                const pad = (n) => String(n).padStart(2, '0');
+                const now = new Date();
+                
+                // Allow today, past 7 days, and next 2 days for timezone/grace
+                for (let offset = -7; offset <= 2; offset++) {
+                    const d = new Date(now);
+                    d.setDate(d.getDate() + offset);
+                    const mmdd = pad(d.getMonth() + 1) + pad(d.getDate());
+                    if (datePart === mmdd) return true;
+                }
+            }
+            return false;
+        }
+
         function verifyPin() {
             const pin = document.getElementById('pin-input').value.trim().toUpperCase();
             const errorMsg = document.getElementById('pin-error');
             
-            // PIN is MS0920 (MagnetSigns + Month/Day)
-            if (pin === 'MS0920') {
+            if (isValidPin(pin)) {
                 unlockProposal(false);
             } else {
                 errorMsg.style.display = 'block';
@@ -943,7 +1104,7 @@
             if (fromPortal) {
                 const toast = document.createElement('div');
                 toast.innerHTML = '🔒 Verified via AoBe Client Portal &bull; Welcome MagnetSigns Operations';
-                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:8px;font-size:0.85rem;box-shadow:0 4px 12px rgba(0,0,0,0.18);z-index:9999;transition:opacity 0.5s;';
+                toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:8px;font-size:0.85rem;box-shadow:0 4px 12px rgba(0,0,0,0.18);z-index:9999;transition:opacity 0.5s;';
                 document.body.appendChild(toast);
                 setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 3500);
             }
@@ -955,7 +1116,7 @@
             const authParam = (urlParams.get('auth') || urlParams.get('pin') || '').toUpperCase();
             const sessionPin = (sessionStorage.getItem('aobe_portal_pin') || '').toUpperCase();
             
-            if (authParam === 'MS0920' || sessionPin === 'MS0920') {
+            if (isValidPin(authParam) || isValidPin(sessionPin)) {
                 unlockProposal(true);
             }
         });
